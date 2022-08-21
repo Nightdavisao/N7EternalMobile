@@ -11,7 +11,7 @@ A patch to make the game playable in mobile devices (specifically Android).
 maybe refactor some stuff
 ## Gameplay
 Playing the game with this patch requires having more than one finger in one of your hands.  
-Pressing with two fingers: simulates the "escape" key (or call it right mouse button)
+Pressing with two fingers: simulates the "escape" key (or call it right mouse button)  
 Pressing with three fingers: opens the backlog
 ## Instructions
 making it asap
