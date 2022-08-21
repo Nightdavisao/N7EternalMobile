@@ -1,0 +1,134 @@
+22d21
+< 
+53,61c52
+< 	if gvars.winmode == "0" then
+< 		love.window.setMode(800, 600, {resizable = true, fullscreen = false})
+< 	elseif gvars.winmode == "1" then
+< 		love.window.setMode(0, 0, {resizable = false, fullscreen = true})
+< 	elseif gvars.winmode == "2" then
+< 		love.window.setMode(800, 600, {resizable = false, fullscreen = false})
+< 	elseif gvars.winmode == "3" then
+< 		love.window.setMode(1600, 1200, {resizable = false, fullscreen = false})
+< 	end
+---
+> 
+64a56,61
+> 	-- touch support
+> 	begin_scroll_y = nil
+> 	begin_y = nil
+> 	end_y = nil
+> 	doingTouch = false
+> 	-- loading instructions
+88a86,161
+> function tablelength(T)
+>   local count = 0
+>   for _ in pairs(T) do count = count + 1 end
+>   return count
+> end
+> 
+> touches_amount = 0
+> function love.touchpressed(id, x, y, dx, dy, pressure)
+> 	print("touch pressed")
+> 	if doingTouch == false then
+> 		begin_y = y
+> 		begin_scroll_y = y
+> 		doingTouch = true
+> 	end
+> 
+> 	touches_amount = tablelength(love.touch.getTouches())
+> end
+> 
+> function love.touchmoved(id, x, y, dx, dy, pressure)
+> 	if state == BACKLOG or state == PLAYING_LOG or state == FLOW_MENU then
+> 		if begin_scroll_y then
+> 			should_scroll = 0
+> 			scroll_factor = 0.5
+> 			if state == BACKLOG then
+> 				scroll_factor = (20 / tablelength(backlog)) * 0.100
+> 			end
+> 
+> 			if state == BACKLOG or state == PLAYING_LOG or state == FLOW_MENU then
+> 				if (y - begin_scroll_y) - scroll_factor > 0 then
+> 					should_scroll = 1
+> 				elseif (y - begin_scroll_y) - scroll_factor < -scroll_factor then
+> 					should_scroll = -1
+> 				else
+> 					should_scroll = 0
+> 				end
+> 			end
+> 
+> 			if state == BACKLOG then
+> 				scroll_backlog(should_scroll)
+> 			elseif state == FLOW_MENU then
+> 				flow_menu_scroll(should_scroll)
+> 			elseif state == PLAYING_LOG then
+> 				playing_log_scroll(should_scroll)
+> 			end
+> 			begin_scroll_y = y
+> 		end
+> 	end
+> 
+> end
+> 
+> function love.touchreleased(id, x, y, dx, dy, pressure)
+> 	print("touch was released")
+> 	end_y = y
+> 	if doingTouch == true then
+> 		if begin_y == end_y and touches_amount == 1 then
+> 			love.mousepressed(x, y, 1)
+> 		end
+> 		begin_scroll_y = nil
+> 		begin_y = nil
+> 		end_y = nil
+> 		doingTouch = false
+> 
+> 		if touches_amount == 2 then
+> 			love.keypressed("escape")
+> 		end
+> 		if touches_amount == 3 then
+> 			if state == BACKLOG then 
+> 				close_backlog()
+> 			else
+> 				open_backlog()
+> 			end
+> 		end
+> 	end
+> end
+> 
+> 
+197c270,271
+< 	if vars.autoscroll == "0" and love.keyboard.isDown("lctrl") and (skippable or gvars.skip ~= "0") then
+---
+> 	local touches = love.touch.getTouches()
+> 	if vars.autoscroll == "0" and (love.keyboard.isDown("lctrl") or tablelength(touches) == 4) and (skippable or gvars.skip ~= "0") then
+240c314
+< 	local sw, sh = love.graphics.getPixelDimensions()
+---
+> 	local sw, sh = love.graphics.getDimensions()
+267c341,345
+< function love.mousepressed(x, y, button)
+---
+> function love.mousepressed(x, y, button, istouch)
+> 	if istouch == true then
+> 		return
+> 	end
+> 	print(string.format("is the mouse pressing? (%s, %s, %s)", x, y, button))
+668a747,748
+> 	-- Make sure game elements are shown if certain area is obstructed by screen notch or even the system ui
+> 	local safeX = love.window.getSafeArea()
+680c760
+< 	local sw, sh = love.graphics.getPixelDimensions()
+---
+> 	local sw, sh = love.graphics.getDimensions()
+702c782
+< 			screen_left = -x / screenscale
+---
+> 			screen_left = (-x + safeX) / screenscale
+1223a1304,1310
+> 	end
+> end
+> 
+> function love.focus(focused)
+> 	if focused == false then
+> 		save_system()
+> 		save_game("auto")
