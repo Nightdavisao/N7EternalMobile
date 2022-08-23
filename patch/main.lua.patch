@@ -19,7 +19,7 @@
 > 	end_y = nil
 > 	doingTouch = false
 > 	-- loading instructions
-88a86,161
+88a86,158
 > function tablelength(T)
 >   local count = 0
 >   for _ in pairs(T) do count = count + 1 end
@@ -28,7 +28,6 @@
 > 
 > touches_amount = 0
 > function love.touchpressed(id, x, y, dx, dy, pressure)
-> 	print("touch pressed")
 > 	if doingTouch == false then
 > 		begin_y = y
 > 		begin_scroll_y = y
@@ -47,14 +46,12 @@
 > 				scroll_factor = (20 / tablelength(backlog)) * 0.100
 > 			end
 > 
-> 			if state == BACKLOG or state == PLAYING_LOG or state == FLOW_MENU then
-> 				if (y - begin_scroll_y) - scroll_factor > 0 then
-> 					should_scroll = 1
-> 				elseif (y - begin_scroll_y) - scroll_factor < -scroll_factor then
-> 					should_scroll = -1
-> 				else
-> 					should_scroll = 0
-> 				end
+> 			if (y - begin_scroll_y) - scroll_factor > 0 then
+> 				should_scroll = 1
+> 			elseif (y - begin_scroll_y) - scroll_factor < -scroll_factor then
+> 				should_scroll = -1
+> 			else
+> 				should_scroll = 0
 > 			end
 > 
 > 			if state == BACKLOG then
@@ -71,16 +68,11 @@
 > end
 > 
 > function love.touchreleased(id, x, y, dx, dy, pressure)
-> 	print("touch was released")
 > 	end_y = y
 > 	if doingTouch == true then
 > 		if begin_y == end_y and touches_amount == 1 then
 > 			love.mousepressed(x, y, 1)
 > 		end
-> 		begin_scroll_y = nil
-> 		begin_y = nil
-> 		end_y = nil
-> 		doingTouch = false
 > 
 > 		if touches_amount == 2 then
 > 			love.keypressed("escape")
@@ -92,39 +84,43 @@
 > 				open_backlog()
 > 			end
 > 		end
+> 
+> 		begin_scroll_y = nil
+> 		begin_y = nil
+> 		end_y = nil
+> 		doingTouch = false
 > 	end
 > end
 > 
 > 
-197c270,271
+197c267,268
 < 	if vars.autoscroll == "0" and love.keyboard.isDown("lctrl") and (skippable or gvars.skip ~= "0") then
 ---
 > 	local touches = love.touch.getTouches()
 > 	if vars.autoscroll == "0" and (love.keyboard.isDown("lctrl") or tablelength(touches) == 4) and (skippable or gvars.skip ~= "0") then
-240c314
+240c311
 < 	local sw, sh = love.graphics.getPixelDimensions()
 ---
 > 	local sw, sh = love.graphics.getDimensions()
-267c341,345
+267c338,341
 < function love.mousepressed(x, y, button)
 ---
 > function love.mousepressed(x, y, button, istouch)
 > 	if istouch == true then
 > 		return
 > 	end
-> 	print(string.format("is the mouse pressing? (%s, %s, %s)", x, y, button))
-668a747,748
+668a743,744
 > 	-- Make sure game elements are shown if certain area is obstructed by screen notch or even the system ui
 > 	local safeX = love.window.getSafeArea()
-680c760
+680c756
 < 	local sw, sh = love.graphics.getPixelDimensions()
 ---
 > 	local sw, sh = love.graphics.getDimensions()
-702c782
+702c778
 < 			screen_left = -x / screenscale
 ---
 > 			screen_left = (-x + safeX) / screenscale
-1223a1304,1310
+1223a1300,1306
 > 	end
 > end
 > 
