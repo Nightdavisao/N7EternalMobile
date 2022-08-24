@@ -29,7 +29,7 @@ tldr: install the [LÖVE engine's APK](https://github.com/love2d/love/releases/d
 3. Download the pre-patched game files [here](https://github.com/Nightdavisao/N7EternalMobile/releases/download/v0.1/patch_foda.zip) and extract over the "lovegame" folder, overwriting the already existing files.
 4. Now we just need to transfer the whole stuff. Extract the downloaded SDK platform-tools somewhere then open a command prompt (aka cmd) by using Windows+R and typing "cmd" then pressing enter.
 6. Connect your device with a USB cable.
-7. When the command prompt window show up, type "cd" with space right after "cd", then drag the "platform-tools" folder to the cmd and then drop it. You should see a location pointing to this folder.
+7. When the command prompt window show up, type "cd" with space right after "cd", then drag the "platform-tools" folder to the cmd and then drop it. You should see a location pointing to this folder, just press enter.
 8. Type "adb.exe devices", press enter and check if your device is listed there, if it's not, perhaps you're having driver issues or a bad USB cable and you should google the problem if it's the former.
 9. Type the following command: "adb.exe push (the location pointing to the 'games' folder) /sdcard/Android/data/org.love2d.android/files/", you can just drag'n'drop the "games" folder like you did before for the "cd" command, after all that, press enter and wait for the transfer get done.
 10. Now you can just open the game by opening the game's engine app ("LÖVE for Android").
