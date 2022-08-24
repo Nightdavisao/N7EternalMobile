@@ -19,7 +19,7 @@ Playing the game with this patch requires having more than one finger in your ha
 * **Tapping with four fingers**: performs fast forward 
 ## How to use this patch to play the VN
 ### Playing it on Android
-tldr: install the [LÖVE engine's APK](https://github.com/love2d/love/releases/download/11.4/love-11.4-android.apk), extract the game file, extract [the patch](https://github.com/Nightdavisao/N7EternalMobile/releases/download/v0.1/patch_foda.zip) over the extracted game, then manage to transfer it to /sdcard/Android/data/org.love2d.android/files/games/lovegame and now you ready to play by opening the engine app
+tldr: install the [LÖVE engine's APK](https://github.com/love2d/love/releases/download/11.4/love-11.4-android.apk), extract the game file, extract [the patch](https://github.com/Nightdavisao/N7EternalMobile/releases/download/v0.1/patch_foda.zip) over the extracted game, then manage to transfer it to /sdcard/Android/data/org.love2d.android/files/games/lovegame and now you're ready to play by opening the engine app
 * First of all, [you should have the game already downloaded](https://www.mediafire.com/file/nshjldhr3zzm760/n7e.love/file).
 * Also, you should make sure your device has enough free space (at least 5 GBs).  
 * Download the [SDK platform-tools](https://developer.android.com/studio/releases/platform-tools) to be able to transfer the whole game to your device. 
@@ -29,7 +29,7 @@ tldr: install the [LÖVE engine's APK](https://github.com/love2d/love/releases/d
 3. Download the pre-patched game files [here](https://github.com/Nightdavisao/N7EternalMobile/releases/download/v0.1/patch_foda.zip) and extract over the "lovegame" folder, overwriting the already existing files.
 4. Now we just need to transfer the whole stuff. Extract the downloaded SDK platform-tools somewhere then open a command prompt (aka cmd) by using Windows+R and typing "cmd" then pressing enter.
 6. Connect your device with a USB cable.
-7. When the command prompt window show up, type "cd" with space right after "cd", then drag the "platform-tools" folder to the cmd and then drop it. You should see a location pointing to this folder, just press enter.
+7. When the command prompt window show up, type "cd" with a space right after "cd", then drag the "platform-tools" folder to the cmd and then drop it. You should see a location pointing to this folder, just press enter.
 8. Type "adb.exe devices", press enter and check if your device is listed there, if it's not, perhaps you're having driver issues or a bad USB cable and you should google the problem if it's the former.
 9. Type the following command: "adb.exe push (the location pointing to the 'games' folder) /sdcard/Android/data/org.love2d.android/files/", you can just drag'n'drop the "games" folder like you did before for the "cd" command, after all that, press enter and wait for the transfer get done.
 10. Now you can just open the game by opening the game's engine app ("LÖVE for Android").
