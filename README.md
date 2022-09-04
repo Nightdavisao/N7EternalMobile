@@ -27,7 +27,7 @@ A patch to make the game playable in mobile devices (specifically for Android de
 A: I don't know. I could ~~steal~~ borrow an iThing from my family and tell you if it works, but instead [you can tell me](https://www.reddit.com/message/compose/?to=nightdavisao) and I will gladly edit this answer. In theory it should work if the LÖVE's version in the App Store is updated to 11.4.  
 **Q: Does it work with the LÖVE's Play Store version?**  
 A: No. Don't even try it. You will miserably fail to make it work, this version is just too outdated.  
-**Q: Does transferring the files by the usual way (through the Windows Explorer) works?  
+**Q: Does transferring the files by the usual way (through the Windows Explorer) works?**  
 A: Yes if you believe you can do it. But keep in mind that this is the most slower way to transfer files and it tends to fail.
 ## Gameplay
 You may need working fingers to play the VN. Scrolling the menus using one of your fingers works just fine. 
