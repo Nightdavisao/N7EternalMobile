@@ -16,7 +16,7 @@ A patch to make the game playable in mobile devices (specifically for Android de
 ## Notes
 * The game is automatically saved when it loses its focus (when it's running in background or when you open the system's notification panel) and there's no option to disable the auto saving for now.
 * The sound won't pause if you leave the game open in background.
-* Connecting an headset/headphone while the game is open won't route the sound to the connected device but instead it will stop playing any sound. Connect whatever you want to connect first and then open the game. This seems to be a problem with the engine itself.
+* Connecting a headset/headphone while the game is open won't route the sound to the connected device but instead it will stop playing any sound. Connect whatever you want to connect first and then open the game. This seems to be a problem with the engine itself.
 * Don't try to change the game's display resolution. 
 ## TODO
 * GUI elements for instant skip and fast forwarding (almost done)
@@ -26,7 +26,9 @@ A patch to make the game playable in mobile devices (specifically for Android de
 **Q: Does it work in iOS?**  
 A: I don't know. I could ~~steal~~ borrow an iThing from my family and tell you if it works, but instead [you can tell me](https://www.reddit.com/message/compose/?to=nightdavisao) and I will gladly edit this answer. In theory it should work if the LÖVE's version in the App Store is updated to 11.4.  
 **Q: Does it work with the LÖVE's Play Store version?**  
-A: No. Don't even try it. You will miserably fail to make it work, this version is just too outdated.
+A: No. Don't even try it. You will miserably fail to make it work, this version is just too outdated.  
+**Q: Does transferring the files by the usual way (through the Windows Explorer) works?  
+A: Yes if you believe you can do it. But keep in mind that this is the most slower way to transfer files and it tends to fail.
 ## Gameplay
 You may need working fingers to play the VN. Scrolling the menus using one of your fingers works just fine. 
 * **Tapping with two fingers**: goes back or opens the in-game menu 
