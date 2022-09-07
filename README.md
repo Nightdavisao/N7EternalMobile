@@ -1,10 +1,10 @@
 # Never7 Eternal Edition for mobile devices
 A patch to make the game playable in mobile devices (specifically for Android devices).
-* [Notes](#notes)
 * [What's working](#whats-working)
+* [Notes](#notes)
 * [TODO](#todo)
-* [Gameplay](#gameplay)
 * [FAQ](#faq)
+* [Gameplay](#gameplay)
 * [How to install it](#how-to-use-this-patch-to-play-the-vn)
 ## What's working
 * Opening the game (couldn't open before without removing some pixel shader that for some reason doesn't work)
@@ -24,7 +24,7 @@ A patch to make the game playable in mobile devices (specifically for Android de
 ## FAQ
 *No one really asked me anything below so call it a QA*  
 **Q: Does it work in iOS?**  
-A: I don't know. [You can tell me](https://www.reddit.com/message/compose/?to=nightdavisao) and I will gladly edit this answer.
+A: I don't know. [You can tell me](https://www.reddit.com/message/compose/?to=nightdavisao) and I will gladly edit this answer.  
 **Q: Does it work with the LÖVE's Play Store version?**  
 A: No. Don't even try it. You will miserably fail to make it work, this version is just too outdated.  
 **Q: Does transferring the files by the usual way (through the Windows Explorer) works?**  
