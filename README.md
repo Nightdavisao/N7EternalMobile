@@ -12,15 +12,14 @@ A patch to make the game playable in mobile devices (specifically for Android de
 * Unlocked aspect ratio (the game will be draw in a safe area where it isn't obstructed by the phone's screen notch or the system UI)
 * Opening the pause menu and backlog in-game
 * Scrolling in backlog, playing log and the shortcut menu ("flow menu")
-* Fast-forwarding (but for now it's too uncomfortable to do so, though)
+* Fast forwarding and instant skip
 ## Notes
 * The game is automatically saved when it loses its focus (when it's running in background or when you open the system's notification panel) and there's no option to disable the auto saving for now.
 * The sound won't pause if you leave the game open in background.
 * Connecting a headset/headphone while the game is open won't route the sound to the connected device but instead it will stop playing any sound. Connect whatever you want to connect first and then open the game. This seems to be a problem with the engine itself.
-* Don't try to change the game's display resolution. 
 ## TODO
-* GUI elements for instant skip and fast forwarding (almost done)
-* maybe more... 
+* ~~GUI elements for instant skip and fast forwarding~~ (done in v0.2)
+* maybe more...
 ## FAQ
 *No one really asked me anything below so call it a QA*  
 **Q: Does it work in iOS?**  
@@ -30,10 +29,8 @@ A: No. Don't even try it. You will miserably fail to make it work, this version 
 **Q: Does transferring the files by the usual way (through the Windows Explorer) works?**  
 A: Yes if you believe you can do it. But keep in mind that this is the most slower way to transfer files and it tends to fail.
 ## Gameplay
-You may need working fingers to play the VN. Scrolling the menus using one of your fingers works just fine. 
-* **Tapping with two fingers**: goes back or opens the in-game menu 
-* **Tapping with three fingers**: opens the backlog  
-* **Pressing with four fingers**: performs fast forward  
+You can do fast forward, instant skip and open the backlog with the GUI controls. Scrolling the menus using one of your fingers works just fine. 
+* **Tapping with two fingers**: goes back or opens the in-game menu
 ## How to use this patch to play the VN
 Below I explain how to transfer the game using Android's ADB in a Windows enviroment. If you're familiar with ADB and stuff already, I assume you just need to read this: Install the [LÖVE engine's APK](https://github.com/love2d/love/releases/download/11.4/love-11.4-android.apk), extract the game file (it's just a compressed zip file), [download](https://github.com/Nightdavisao/N7EternalMobile/releases/latest) and extract the patch over the extracted game, then transfer the files to `/sdcard/Android/data/org.love2d.android/files/games/lovegame` and now you're ready to play by opening the engine app.  
 Of course, you can do all of this in your device without relying on a computer, but will it take the double of the free space you need (about 10 GBs) in order to do this.
