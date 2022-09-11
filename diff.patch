@@ -19,7 +19,7 @@ diff -x foreground -x movie -x music -x upscale -x script -x scriptja -x scriptp
  	t.modules.data = false
 diff -x foreground -x movie -x music -x upscale -x script -x scriptja -x scriptpt -x sound -urN n7e/main.lua lovegame/main.lua
 --- n7e/main.lua	2022-02-26 23:04:20.000000000 -0300
-+++ lovegame/main.lua	2022-09-10 18:18:36.252886500 -0300
++++ lovegame/main.lua	2022-09-11 12:08:32.821536200 -0300
 @@ -17,9 +17,9 @@
  love.filesystem.load("tips.lua")()
  love.filesystem.load("text_input.lua")()
@@ -31,22 +31,21 @@ diff -x foreground -x movie -x music -x upscale -x script -x scriptja -x scriptp
  local fsread = love.filesystem.read
  function love.filesystem.read(path)
  	if path:match("^script/") then
-@@ -49,7 +49,14 @@
+@@ -49,19 +49,17 @@
  	return loaded_snds[path]
  end
  
-+function is_running_on_mobile_os()
-+	return love.system.getOS() == "Android" or love.system.getOS() == "iOS"
-+end
 +
  function updatewinmode()
-+	if is_running_on_mobile_os() then
-+		return
-+	end
- 	if gvars.winmode == "0" then
- 		love.window.setMode(800, 600, {resizable = true, fullscreen = false})
- 	elseif gvars.winmode == "1" then
-@@ -62,6 +69,12 @@
+-	if gvars.winmode == "0" then
+-		love.window.setMode(800, 600, {resizable = true, fullscreen = false})
+-	elseif gvars.winmode == "1" then
+-		love.window.setMode(0, 0, {resizable = false, fullscreen = true})
+-	elseif gvars.winmode == "2" then
+-		love.window.setMode(800, 600, {resizable = false, fullscreen = false})
+-	elseif gvars.winmode == "3" then
+-		love.window.setMode(1600, 1200, {resizable = false, fullscreen = false})
+-	end
  end
  
  function love.load()
@@ -59,7 +58,7 @@ diff -x foreground -x movie -x music -x upscale -x script -x scriptja -x scriptp
  	love.keyboard.setKeyRepeat(true)
  	love.graphics.setDefaultFilter("linear", "linear")
  	font = love.graphics.newFont(font_filename, 26)
-@@ -86,6 +99,72 @@
+@@ -86,6 +84,72 @@
  	append_editor_load()
  end
  
@@ -132,7 +131,7 @@ diff -x foreground -x movie -x music -x upscale -x script -x scriptja -x scriptp
  DELAYING = 0
  SCROLLING = 1
  WAITING = 2
-@@ -194,7 +273,7 @@
+@@ -194,7 +258,7 @@
  		delay = delay + 60
  		state = SCROLLING
  	end
@@ -141,7 +140,7 @@ diff -x foreground -x movie -x music -x upscale -x script -x scriptja -x scriptp
  		advance()
  	end
  	if type(bgm) == "string" then
-@@ -237,7 +316,7 @@
+@@ -237,7 +301,7 @@
  
  mousex, mousey = 0, 0
  function love.mousemoved(x, y)
@@ -150,7 +149,7 @@ diff -x foreground -x movie -x music -x upscale -x script -x scriptja -x scriptp
  	local w = sh * 800 / 600
  	if w > sw then
  		local h = sw * 600 / 800
-@@ -264,9 +343,13 @@
+@@ -264,9 +328,13 @@
  end
  
  local last_input = -10
@@ -165,7 +164,7 @@ diff -x foreground -x movie -x music -x upscale -x script -x scriptja -x scriptp
  		hiding_text_box = false
  		if state == POLLING and is_polling_for("click") then
  			vars.setting = "1"
-@@ -467,6 +550,7 @@
+@@ -467,6 +535,7 @@
  function love.quit()
  	save_system()
  	save_game("auto")
@@ -173,7 +172,7 @@ diff -x foreground -x movie -x music -x upscale -x script -x scriptja -x scriptp
  	print("quit safely")
  end
  
-@@ -666,6 +750,8 @@
+@@ -666,6 +735,8 @@
  	if is_waiting_for_load() then
  		return
  	end
@@ -182,7 +181,7 @@ diff -x foreground -x movie -x music -x upscale -x script -x scriptja -x scriptp
  	wide_mode = gvars.unlockaspect ~= "0" or wide_forcing
  	wide_forcing = false
  	vars.fps = love.timer.getFPS()
-@@ -677,7 +763,7 @@
+@@ -677,7 +748,7 @@
  		love.graphics.clear()
  	end
  	love.graphics.push()
@@ -191,7 +190,7 @@ diff -x foreground -x movie -x music -x upscale -x script -x scriptja -x scriptp
  	local w = sh * 800 / 600
  	if w > sw then
  		local h = sw * 600 / 800
-@@ -699,7 +785,7 @@
+@@ -699,7 +770,7 @@
  		screenscale = sh / 600
  		love.graphics.scale(screenscale)
  		if wide_mode then
@@ -200,7 +199,7 @@ diff -x foreground -x movie -x music -x upscale -x script -x scriptja -x scriptp
  			screen_right = 800 + x / screenscale
  			screen_top = 0
  			screen_bottom = 600
-@@ -1224,6 +1310,14 @@
+@@ -1224,6 +1295,14 @@
  	end
  end
  
