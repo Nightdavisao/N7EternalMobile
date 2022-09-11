@@ -467,7 +467,7 @@ diff -x foreground -x movie -x music -x upscale -x script -x scriptja -x scriptp
  				else
 diff -x foreground -x movie -x music -x upscale -x script -x scriptja -x scriptpt -x sound -urN /mnt/d/n7e/touch_controls.lua lovegame/touch_controls.lua
 --- /mnt/d/n7e/touch_controls.lua	1969-12-31 21:00:00.000000000 -0300
-+++ lovegame/touch_controls.lua	2022-09-11 12:23:45.956503800 -0300
++++ lovegame/touch_controls.lua	2022-09-11 12:32:52.799512400 -0300
 @@ -0,0 +1,116 @@
 +local click_interval = 0.5
 +
@@ -494,7 +494,7 @@ diff -x foreground -x movie -x music -x upscale -x script -x scriptja -x scriptp
 +mouse_x = 0
 +local shadow_offset = 3
 +local backlog_offset = 110
-+local config_offset = 215
++local pause_offset = 205
 +
 +function is_skippable()
 +	return vars.autoscroll == "0" and skippable or gvars.skip ~= "0"
@@ -536,12 +536,12 @@ diff -x foreground -x movie -x music -x upscale -x script -x scriptja -x scriptp
 +			love.graphics.printf("Backlog", x_pos - backlog_offset + shadow_offset, y_pos + shadow_offset, 100, "center")
 +		end
 +
-+		if is_touch_clicking(config_offset, 100) then
++		if is_touch_clicking(pause_offset, 85) then
 +			love.graphics.setColor(0, 0, 255)
-+			love.graphics.printf("Config", x_pos - config_offset + shadow_offset, y_pos + shadow_offset, 100, "center")
++			love.graphics.printf("Pause", x_pos - pause_offset + shadow_offset, y_pos + shadow_offset, 100, "center")
 +		else
 +			love.graphics.setColor(0, 0, 0)
-+			love.graphics.printf("Config", x_pos - config_offset + shadow_offset, y_pos + shadow_offset, 100, "center")
++			love.graphics.printf("Pause", x_pos - pause_offset + shadow_offset, y_pos + shadow_offset, 100, "center")
 +		end
 +		
 +		love.graphics.setColor(255, 255, 255)
@@ -549,7 +549,7 @@ diff -x foreground -x movie -x music -x upscale -x script -x scriptja -x scriptp
 +			love.graphics.printf("Skip", x_pos, y_pos, 60, "center")
 +		end
 +		love.graphics.printf("Backlog", x_pos - backlog_offset, y_pos, 100, "center")
-+		love.graphics.printf("Config", x_pos - config_offset, y_pos, 100, "center")
++		love.graphics.printf("Pause", x_pos - pause_offset, y_pos, 100, "center")
 +		love.graphics.pop()
 +	end
 +end
@@ -580,7 +580,7 @@ diff -x foreground -x movie -x music -x upscale -x script -x scriptja -x scriptp
 +		if is_touch_clicking(backlog_offset, 100) then
 +			love.keypressed("b")
 +		end
-+		if is_touch_clicking(config_offset, 100) then
++		if is_touch_clicking(pause_offset, 85) then
 +			love.keypressed("escape")
 +		end
 +	end
