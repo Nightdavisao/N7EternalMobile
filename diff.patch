@@ -1,5 +1,5 @@
-diff -x foreground -x movie -x music -x upscale -x script -x scriptja -x scriptpt -x sound -urN n7e/conf.lua lovegame/conf.lua
---- n7e/conf.lua	2022-02-04 00:50:38.000000000 -0300
+diff -x foreground -x movie -x music -x upscale -x script -x scriptja -x scriptpt -x sound -urN /mnt/d/n7e/conf.lua lovegame/conf.lua
+--- /mnt/d/n7e/conf.lua	2022-02-04 00:50:38.000000000 -0300
 +++ lovegame/conf.lua	2022-09-10 18:21:14.157911000 -0300
 @@ -1,10 +1,12 @@
 +io.stdout:setvbuf('no')
@@ -17,8 +17,8 @@ diff -x foreground -x movie -x music -x upscale -x script -x scriptja -x scriptp
  	t.gammacorrect = false
  	t.accelerometerjoystick = false
  	t.modules.data = false
-diff -x foreground -x movie -x music -x upscale -x script -x scriptja -x scriptpt -x sound -urN n7e/main.lua lovegame/main.lua
---- n7e/main.lua	2022-02-26 23:04:20.000000000 -0300
+diff -x foreground -x movie -x music -x upscale -x script -x scriptja -x scriptpt -x sound -urN /mnt/d/n7e/main.lua lovegame/main.lua
+--- /mnt/d/n7e/main.lua	2022-02-26 23:04:20.000000000 -0300
 +++ lovegame/main.lua	2022-09-11 12:08:32.821536200 -0300
 @@ -17,9 +17,9 @@
  love.filesystem.load("tips.lua")()
@@ -214,9 +214,9 @@ diff -x foreground -x movie -x music -x upscale -x script -x scriptja -x scriptp
  function love.lowmemory()
  	collectgarbage()
  	save_system()
-diff -x foreground -x movie -x music -x upscale -x script -x scriptja -x scriptpt -x sound -urN n7e/middleman.lua lovegame/middleman.lua
---- n7e/middleman.lua	2022-02-25 22:16:38.000000000 -0300
-+++ lovegame/middleman.lua	2022-09-10 17:14:58.863547900 -0300
+diff -x foreground -x movie -x music -x upscale -x script -x scriptja -x scriptpt -x sound -urN /mnt/d/n7e/middleman.lua lovegame/middleman.lua
+--- /mnt/d/n7e/middleman.lua	2022-02-25 22:16:38.000000000 -0300
++++ lovegame/middleman.lua	2022-09-11 12:13:21.633158700 -0300
 @@ -23,6 +23,7 @@
  end
  
@@ -225,23 +225,15 @@ diff -x foreground -x movie -x music -x upscale -x script -x scriptja -x scriptp
  	if guimode() == "pc" then
  		n7_mouse_moved(x, y)
  	elseif guimode() == "psp" then
-@@ -34,6 +35,7 @@
- 
- function middleman_draw_textbox()
- 	if guimode() == "pc" then
-+		controls_change_y_pos(600 - 184 - 8 - 56 - 4 - 22 + 20)
- 		n7_draw_textbox()
- 	elseif guimode() == "psp" then
- 		n7_psp_draw_textbox()
-@@ -686,4 +688,5 @@
+@@ -686,4 +687,5 @@
  			particle(864, p, particle_komore, 0, 0)
  		end
  	end
 +	draw_touch_controls()
  end
 \ No newline at end of file
-diff -x foreground -x movie -x music -x upscale -x script -x scriptja -x scriptpt -x sound -urN n7e/n7.lua lovegame/n7.lua
---- n7e/n7.lua	2022-02-26 19:32:04.000000000 -0300
+diff -x foreground -x movie -x music -x upscale -x script -x scriptja -x scriptpt -x sound -urN /mnt/d/n7e/n7.lua lovegame/n7.lua
+--- /mnt/d/n7e/n7.lua	2022-02-26 19:32:04.000000000 -0300
 +++ lovegame/n7.lua	2022-08-21 17:53:52.498612800 -0300
 @@ -223,38 +223,6 @@
  	end
@@ -294,8 +286,8 @@ diff -x foreground -x movie -x music -x upscale -x script -x scriptja -x scriptp
  	love.graphics.push()
  	bg_fit_apply()
  	love.graphics.draw(calendar_bg, 0, 0, 0, 0.5)
-diff -x foreground -x movie -x music -x upscale -x script -x scriptja -x scriptpt -x sound -urN n7e/own/settings.scr lovegame/own/settings.scr
---- n7e/own/settings.scr	2022-02-27 00:53:20.000000000 -0300
+diff -x foreground -x movie -x music -x upscale -x script -x scriptja -x scriptpt -x sound -urN /mnt/d/n7e/own/settings.scr lovegame/own/settings.scr
+--- /mnt/d/n7e/own/settings.scr	2022-02-27 00:53:20.000000000 -0300
 +++ lovegame/own/settings.scr	2022-09-10 17:49:38.464284700 -0300
 @@ -17,6 +17,12 @@
  label game
@@ -408,8 +400,8 @@ diff -x foreground -x movie -x music -x upscale -x script -x scriptja -x scriptp
 -goto visual
 +goto visual
 \ No newline at end of file
-diff -x foreground -x movie -x music -x upscale -x script -x scriptja -x scriptpt -x sound -urN n7e/saving.lua lovegame/saving.lua
---- n7e/saving.lua	2022-02-26 21:09:30.000000000 -0300
+diff -x foreground -x movie -x music -x upscale -x script -x scriptja -x scriptpt -x sound -urN /mnt/d/n7e/saving.lua lovegame/saving.lua
+--- /mnt/d/n7e/saving.lua	2022-02-26 21:09:30.000000000 -0300
 +++ lovegame/saving.lua	2022-09-10 18:25:26.559224400 -0300
 @@ -92,12 +92,14 @@
  function load_system()
@@ -434,8 +426,8 @@ diff -x foreground -x movie -x music -x upscale -x script -x scriptja -x scriptp
  	write_save(-1, gvars2)
  end
  
-diff -x foreground -x movie -x music -x upscale -x script -x scriptja -x scriptpt -x sound -urN n7e/scripting.lua lovegame/scripting.lua
---- n7e/scripting.lua	2022-02-27 02:15:24.000000000 -0300
+diff -x foreground -x movie -x music -x upscale -x script -x scriptja -x scriptpt -x sound -urN /mnt/d/n7e/scripting.lua lovegame/scripting.lua
+--- /mnt/d/n7e/scripting.lua	2022-02-27 02:15:24.000000000 -0300
 +++ lovegame/scripting.lua	2022-09-10 17:42:35.902334600 -0300
 @@ -1,7 +1,7 @@
  local cmds = {}
@@ -473,10 +465,10 @@ diff -x foreground -x movie -x music -x upscale -x script -x scriptja -x scriptp
  				if gvars.ost == "0" or bgm_filename:find("2[67]") then
  					gvars.bgmvol = tostring(math.floor(tonumber(gvars.bgmvol) * 50 / 100))
  				else
-diff -x foreground -x movie -x music -x upscale -x script -x scriptja -x scriptpt -x sound -urN n7e/touch_controls.lua lovegame/touch_controls.lua
---- n7e/touch_controls.lua	1969-12-31 21:00:00.000000000 -0300
-+++ lovegame/touch_controls.lua	2022-09-10 18:20:28.127106200 -0300
-@@ -0,0 +1,110 @@
+diff -x foreground -x movie -x music -x upscale -x script -x scriptja -x scriptpt -x sound -urN /mnt/d/n7e/touch_controls.lua lovegame/touch_controls.lua
+--- /mnt/d/n7e/touch_controls.lua	1969-12-31 21:00:00.000000000 -0300
++++ lovegame/touch_controls.lua	2022-09-11 12:23:45.956503800 -0300
+@@ -0,0 +1,116 @@
 +local click_interval = 0.5
 +
 +function should_show_controls()
@@ -492,11 +484,7 @@ diff -x foreground -x movie -x music -x upscale -x script -x scriptja -x scriptp
 +	and not is_menu
 +end
 +local x_pos = 800 - 90
-+local y_pos = 600 - 184 - 8 - 56 - 4 - 22 + 20
-+
-+function controls_change_y_pos(y)
-+	y_pos = y
-+end
++local y_pos = 0
 +
 +function touch_set_mouse_pos(x, y)
 +	mouse_x = x
@@ -515,6 +503,16 @@ diff -x foreground -x movie -x music -x upscale -x script -x scriptja -x scriptp
 +-- i should refactor this function someday
 +function draw_touch_controls()
 +	if should_show_controls() then
++		if guimode() == "dc" then
++			y_pos = 370 - n7_dc_textbox_bounds() + 20
++			x_pos = 800 - 90
++		elseif guimode() == "pc" then
++			y_pos = 420 - n7_textbox_bounds()
++			x_pos = 800 - 90
++		elseif guimode() == "psp" then
++			y_pos = 435 - n7_psp_textbox_bounds()
++			x_pos = 800 - 70
++		end
 +		love.graphics.push()
 +		-- sombras azuis e pretas
 +		if is_skippable() then
