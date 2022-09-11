@@ -30,7 +30,8 @@ A: No. Don't even try it. You will miserably fail to make it work, this version 
 A: Yes if you believe you can do it. But keep in mind that this is the most slower way to transfer files and it tends to fail.
 ## Gameplay
 You can do fast forward, instant skip and open the backlog with the GUI controls. Scrolling the menus using one of your fingers works just fine. 
-* **Tapping with two fingers**: goes back or opens the in-game menu
+* Tapping with two fingers goes back or opens the in-game menu
+* Double tap the "Skip" text for instant skip, hold it for fast forwarding
 ## How to use this patch to play the VN
 Below I explain how to transfer the game using Android's ADB in a Windows enviroment. If you're familiar with ADB and stuff already, I assume you just need to read this: Install the [LÖVE engine's APK](https://github.com/love2d/love/releases/download/11.4/love-11.4-android.apk), extract the game file (it's just a compressed zip file), [download](https://github.com/Nightdavisao/N7EternalMobile/releases/latest) and extract the patch over the extracted game, then transfer the files to `/sdcard/Android/data/org.love2d.android/files/games/lovegame` and now you're ready to play by opening the engine app.  
 Of course, you can do all of this in your device without relying on a computer, but will it take the double of the free space you need (about 10 GBs) in order to do this.
