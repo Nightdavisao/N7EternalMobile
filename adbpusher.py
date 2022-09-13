@@ -14,8 +14,7 @@ def main():
     modified_files = grab_files()
     for file_path in modified_files:
         print("sending file {}".format(file_path))
-        subprocess.call(args=["adb", "push", file_path, lovegame_path], 
-        cwd=game_path)
+        subprocess.call(args=["adb", "push", file_path, lovegame_path], cwd=game_path)
 
 if __name__ == "__main__":
     main()
