@@ -19,7 +19,7 @@ diff -x foreground -x movie -x music -x upscale -x script -x scriptja -x scriptp
  	t.modules.data = false
 diff -x foreground -x movie -x music -x upscale -x script -x scriptja -x scriptpt -x sound -urN /mnt/d/n7e/main.lua lovegame/main.lua
 --- /mnt/d/n7e/main.lua	2022-02-26 23:04:20.000000000 -0300
-+++ lovegame/main.lua	2022-09-11 14:55:06.193111800 -0300
++++ lovegame/main.lua	2022-09-13 18:45:11.287590300 -0300
 @@ -17,9 +17,9 @@
  love.filesystem.load("tips.lua")()
  love.filesystem.load("text_input.lua")()
@@ -53,7 +53,7 @@ diff -x foreground -x movie -x music -x upscale -x script -x scriptja -x scriptp
 +	begin_scroll_y = nil
 +	begin_y = nil
 +	end_y = nil
-+	doingTouch = false
++	doing_touch = false
 +	-- loading instructions
  	love.keyboard.setKeyRepeat(true)
  	love.graphics.setDefaultFilter("linear", "linear")
@@ -70,10 +70,10 @@ diff -x foreground -x movie -x music -x upscale -x script -x scriptja -x scriptp
 +
 +touches_amount = 0
 +function love.touchpressed(id, x, y, dx, dy, pressure)
-+	if doingTouch == false then
++	if doing_touch == false then
 +		begin_y = y
 +		begin_scroll_y = y
-+		doingTouch = true
++		doing_touch = true
 +	end
 +
 +	touches_amount = tablelength(love.touch.getTouches())
@@ -111,7 +111,7 @@ diff -x foreground -x movie -x music -x upscale -x script -x scriptja -x scriptp
 +
 +function love.touchreleased(id, x, y, dx, dy, pressure)
 +	end_y = y
-+	if doingTouch == true then
++	if doing_touch == true then
 +		if begin_y == end_y and touches_amount == 1 then
 +			love.mousepressed(x, y, 1)
 +		end
@@ -123,7 +123,7 @@ diff -x foreground -x movie -x music -x upscale -x script -x scriptja -x scriptp
 +		begin_scroll_y = nil
 +		begin_y = nil
 +		end_y = nil
-+		doingTouch = false
++		doing_touch = false
 +		touches_amount = 0
 +	end
 +end
@@ -178,7 +178,7 @@ diff -x foreground -x movie -x music -x upscale -x script -x scriptja -x scriptp
  		return
  	end
 +	-- Make sure game elements are shown if certain area is obstructed by screen notch or even the system ui
-+	local safeX = love.window.getSafeArea()
++	local safe_x = love.window.getSafeArea()
  	wide_mode = gvars.unlockaspect ~= "0" or wide_forcing
  	wide_forcing = false
  	vars.fps = love.timer.getFPS()
@@ -196,7 +196,7 @@ diff -x foreground -x movie -x music -x upscale -x script -x scriptja -x scriptp
  		love.graphics.scale(screenscale)
  		if wide_mode then
 -			screen_left = -x / screenscale
-+			screen_left = (-x + safeX) / screenscale
++			screen_left = (-x + safe_x) / screenscale
  			screen_right = 800 + x / screenscale
  			screen_top = 0
  			screen_bottom = 600
