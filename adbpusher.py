@@ -10,14 +10,12 @@ lovegame_path = "/sdcard/Android/data/org.love2d.android/files/games/lovegame/"
 # todo: handle more than one device
 def main():
     # wake the adb process
-    subprocess.call("adb devices")
+    subprocess.call(["adb", "devices"])
     modified_files = grab_files()
     for file_path in modified_files:
         print("sending file {}".format(file_path))
-        process = subprocess.Popen(args=["adb", "push", file_path, lovegame_path], 
-        cwd=game_path, stdout=subprocess.PIPE, shell=True)
-        output = process.communicate()[0].decode('utf-8')
-        print(output)
+        subprocess.call(args=["adb", "push", file_path, lovegame_path], 
+        cwd=game_path)
 
 if __name__ == "__main__":
     main()
