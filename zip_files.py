@@ -1,16 +1,18 @@
+# script that zips the modified files
+
 import sys, zipfile, os
+from grabber import grab_files
+# todo: use argparse
 game_path = sys.argv[1]
+zip_name = sys.argv[2]
 
-
-with open('diff.patch', 'r') as f:
-    lines = f.readlines()
-    with zipfile.ZipFile("patch_foda.zip", "w") as archive:
-        for line in lines:
-            # this grabs the modified files
-            if line.startswith("+++"):
-                stripped = line[4:line.find('\t')]
-                stripped = stripped[stripped.find('/')+1:]
-                archive.write(os.path.join(game_path, stripped), arcname=stripped)
+def main():
+    with zipfile.ZipFile(zip_name, "w") as archive:
+        modified_files = grab_files()
+        for file_path in modified_files:
+            archive.write(os.path.join(game_path, file_path), arcname=file_path)
         archive.close()
 
-    f.close()
+
+if __name__ == "__main__":
+    main()
