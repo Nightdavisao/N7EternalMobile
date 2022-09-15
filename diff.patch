@@ -1,7 +1,7 @@
 diff -x foreground -x movie -x music -x upscale -x script -x scriptja -x scriptpt -x sound -urN /mnt/d/n7e/conf.lua lovegame/conf.lua
 --- /mnt/d/n7e/conf.lua	2022-02-04 00:50:38.000000000 -0300
-+++ lovegame/conf.lua	2022-09-13 20:41:20.345750300 -0300
-@@ -1,13 +1,19 @@
++++ lovegame/conf.lua	2022-09-15 18:16:27.464050000 -0300
+@@ -1,10 +1,12 @@
 +io.stdout:setvbuf('no')
 +
  function love.conf(t)
@@ -17,13 +17,6 @@ diff -x foreground -x movie -x music -x upscale -x script -x scriptja -x scriptp
  	t.gammacorrect = false
  	t.accelerometerjoystick = false
  	t.modules.data = false
- 	t.modules.joystick = false
- 	t.modules.physics = false
-+	-- "Sets whether background audio / music from other apps should play while LÖVE is open."
-+	-- doesn't really work, music apps still play
-+	t.audio.mixwithsystem = false
-+	t.externalstorage = true
- end
 diff -x foreground -x movie -x music -x upscale -x script -x scriptja -x scriptpt -x sound -urN /mnt/d/n7e/main.lua lovegame/main.lua
 --- /mnt/d/n7e/main.lua	2022-02-26 23:04:20.000000000 -0300
 +++ lovegame/main.lua	2022-09-15 18:05:11.461687600 -0300
