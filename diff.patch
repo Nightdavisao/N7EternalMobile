@@ -1,7 +1,7 @@
 diff -x foreground -x movie -x music -x upscale -x script -x scriptja -x scriptpt -x sound -urN /mnt/d/n7e/conf.lua lovegame/conf.lua
 --- /mnt/d/n7e/conf.lua	2022-02-04 00:50:38.000000000 -0300
-+++ lovegame/conf.lua	2022-09-10 18:21:14.157911000 -0300
-@@ -1,10 +1,12 @@
++++ lovegame/conf.lua	2022-09-13 20:41:20.345750300 -0300
+@@ -1,13 +1,19 @@
 +io.stdout:setvbuf('no')
 +
  function love.conf(t)
@@ -17,9 +17,16 @@ diff -x foreground -x movie -x music -x upscale -x script -x scriptja -x scriptp
  	t.gammacorrect = false
  	t.accelerometerjoystick = false
  	t.modules.data = false
+ 	t.modules.joystick = false
+ 	t.modules.physics = false
++	-- "Sets whether background audio / music from other apps should play while LÖVE is open."
++	-- doesn't really work, music apps still play
++	t.audio.mixwithsystem = false
++	t.externalstorage = true
+ end
 diff -x foreground -x movie -x music -x upscale -x script -x scriptja -x scriptpt -x sound -urN /mnt/d/n7e/main.lua lovegame/main.lua
 --- /mnt/d/n7e/main.lua	2022-02-26 23:04:20.000000000 -0300
-+++ lovegame/main.lua	2022-09-13 20:03:26.616293400 -0300
++++ lovegame/main.lua	2022-09-15 18:05:11.461687600 -0300
 @@ -17,9 +17,9 @@
  love.filesystem.load("tips.lua")()
  love.filesystem.load("text_input.lua")()
@@ -58,7 +65,7 @@ diff -x foreground -x movie -x music -x upscale -x script -x scriptja -x scriptp
  	love.keyboard.setKeyRepeat(true)
  	love.graphics.setDefaultFilter("linear", "linear")
  	font = love.graphics.newFont(font_filename, 26)
-@@ -86,6 +84,73 @@
+@@ -86,6 +84,94 @@
  	append_editor_load()
  end
  
@@ -79,7 +86,26 @@ diff -x foreground -x movie -x music -x upscale -x script -x scriptja -x scriptp
 +	touches_amount = tablelength(love.touch.getTouches())
 +end
 +
++local is_pressing_up = false
++local is_pressing_down = false
++
 +function love.touchmoved(id, x, y, dx, dy, pressure)
++	if touches_amount > 1 then
++		return
++	end
++	-- bg pan
++	if y and begin_y then
++		if y > begin_y then
++			is_pressing_up = true
++			is_pressing_down = false
++		elseif begin_y > y then
++			is_pressing_down = true
++			is_pressing_up = false
++		else
++			is_pressing_up = false
++			is_pressing_down = false
++		end
++	end
 +	if state == BACKLOG or state == PLAYING_LOG or state == FLOW_MENU then
 +		if begin_scroll_y then
 +			should_scroll = 0
@@ -125,6 +151,8 @@ diff -x foreground -x movie -x music -x upscale -x script -x scriptja -x scriptp
 +		end_y = nil
 +		doing_touch = false
 +		touches_amount = 0
++		is_pressing_up = false
++		is_pressing_down = false
 +	end
 +end
 +
@@ -132,7 +160,7 @@ diff -x foreground -x movie -x music -x upscale -x script -x scriptja -x scriptp
  DELAYING = 0
  SCROLLING = 1
  WAITING = 2
-@@ -194,7 +259,7 @@
+@@ -194,7 +280,7 @@
  		delay = delay + 60
  		state = SCROLLING
  	end
@@ -141,7 +169,7 @@ diff -x foreground -x movie -x music -x upscale -x script -x scriptja -x scriptp
  		advance()
  	end
  	if type(bgm) == "string" then
-@@ -237,7 +302,7 @@
+@@ -237,7 +323,7 @@
  
  mousex, mousey = 0, 0
  function love.mousemoved(x, y)
@@ -150,7 +178,7 @@ diff -x foreground -x movie -x music -x upscale -x script -x scriptja -x scriptp
  	local w = sh * 800 / 600
  	if w > sw then
  		local h = sw * 600 / 800
-@@ -264,9 +329,13 @@
+@@ -264,9 +350,13 @@
  end
  
  local last_input = -10
@@ -165,7 +193,7 @@ diff -x foreground -x movie -x music -x upscale -x script -x scriptja -x scriptp
  		hiding_text_box = false
  		if state == POLLING and is_polling_for("click") then
  			vars.setting = "1"
-@@ -467,6 +536,7 @@
+@@ -467,6 +557,7 @@
  function love.quit()
  	save_system()
  	save_game("auto")
@@ -173,7 +201,7 @@ diff -x foreground -x movie -x music -x upscale -x script -x scriptja -x scriptp
  	print("quit safely")
  end
  
-@@ -666,6 +736,8 @@
+@@ -666,6 +757,8 @@
  	if is_waiting_for_load() then
  		return
  	end
@@ -182,7 +210,7 @@ diff -x foreground -x movie -x music -x upscale -x script -x scriptja -x scriptp
  	wide_mode = gvars.unlockaspect ~= "0" or wide_forcing
  	wide_forcing = false
  	vars.fps = love.timer.getFPS()
-@@ -677,7 +749,7 @@
+@@ -677,7 +770,7 @@
  		love.graphics.clear()
  	end
  	love.graphics.push()
@@ -191,7 +219,7 @@ diff -x foreground -x movie -x music -x upscale -x script -x scriptja -x scriptp
  	local w = sh * 800 / 600
  	if w > sw then
  		local h = sw * 600 / 800
-@@ -699,8 +771,17 @@
+@@ -699,8 +792,17 @@
  		screenscale = sh / 600
  		love.graphics.scale(screenscale)
  		if wide_mode then
@@ -211,7 +239,20 @@ diff -x foreground -x movie -x music -x upscale -x script -x scriptja -x scriptp
  			screen_top = 0
  			screen_bottom = 600
  		else
-@@ -1224,6 +1305,14 @@
+@@ -732,10 +834,10 @@
+ 
+ 	local bg_crop_panned_this_frame
+ 	if state == WAITING or state == SCROLLING then
+-		if love.keyboard.isDown("down") or love.keyboard.isDown("s") then
++		if love.keyboard.isDown("down") or love.keyboard.isDown("s") or is_pressing_down then
+ 			bg_crop_pan = lint(bg_crop_pan, 1, dt * 16)
+ 			bg_crop_panned_this_frame = true
+-		elseif love.keyboard.isDown("up") or love.keyboard.isDown("w") then
++		elseif love.keyboard.isDown("up") or love.keyboard.isDown("w") or is_pressing_up then
+ 			bg_crop_pan = lint(bg_crop_pan, 0, dt * 16)
+ 			bg_crop_panned_this_frame = true
+ 		end
+@@ -1224,6 +1326,14 @@
  	end
  end
  
