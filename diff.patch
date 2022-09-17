@@ -19,7 +19,7 @@ diff -x foreground -x movie -x music -x upscale -x script -x scriptja -x scriptp
  	t.modules.data = false
 diff -x foreground -x movie -x music -x upscale -x script -x scriptja -x scriptpt -x sound -urN /mnt/d/n7e/main.lua lovegame/main.lua
 --- /mnt/d/n7e/main.lua	2022-02-26 23:04:20.000000000 -0300
-+++ lovegame/main.lua	2022-09-15 18:05:11.461687600 -0300
++++ lovegame/main.lua	2022-09-17 16:09:04.880324800 -0300
 @@ -17,9 +17,9 @@
  love.filesystem.load("tips.lua")()
  love.filesystem.load("text_input.lua")()
@@ -63,9 +63,9 @@ diff -x foreground -x movie -x music -x upscale -x script -x scriptja -x scriptp
  end
  
 +function tablelength(T)
-+  local count = 0
-+  for _ in pairs(T) do count = count + 1 end
-+  return count
++	local count = 0
++	for _ in pairs(T) do count = count + 1 end
++	return count
 +end
 +
 +touches_amount = 0
@@ -75,7 +75,6 @@ diff -x foreground -x movie -x music -x upscale -x script -x scriptja -x scriptp
 +		begin_scroll_y = y
 +		doing_touch = true
 +	end
-+
 +	touches_amount = tablelength(love.touch.getTouches())
 +end
 +
@@ -146,6 +145,7 @@ diff -x foreground -x movie -x music -x upscale -x script -x scriptja -x scriptp
 +		touches_amount = 0
 +		is_pressing_up = false
 +		is_pressing_down = false
++		touch_set_mouse_pos(0, 0)
 +	end
 +end
 +
@@ -171,7 +171,7 @@ diff -x foreground -x movie -x music -x upscale -x script -x scriptja -x scriptp
  	local w = sh * 800 / 600
  	if w > sw then
  		local h = sw * 600 / 800
-@@ -264,9 +350,13 @@
+@@ -264,9 +350,15 @@
  end
  
  local last_input = -10
@@ -182,11 +182,13 @@ diff -x foreground -x movie -x music -x upscale -x script -x scriptja -x scriptp
 +	end
  	last_input = love.timer.getTime()
  	if button == 1 then
-+		handle_click_event()
++		if touch_handle_click_event() == true then
++			return
++		end
  		hiding_text_box = false
  		if state == POLLING and is_polling_for("click") then
  			vars.setting = "1"
-@@ -467,6 +557,7 @@
+@@ -467,6 +559,7 @@
  function love.quit()
  	save_system()
  	save_game("auto")
@@ -194,7 +196,7 @@ diff -x foreground -x movie -x music -x upscale -x script -x scriptja -x scriptp
  	print("quit safely")
  end
  
-@@ -666,6 +757,8 @@
+@@ -666,6 +759,8 @@
  	if is_waiting_for_load() then
  		return
  	end
@@ -203,7 +205,7 @@ diff -x foreground -x movie -x music -x upscale -x script -x scriptja -x scriptp
  	wide_mode = gvars.unlockaspect ~= "0" or wide_forcing
  	wide_forcing = false
  	vars.fps = love.timer.getFPS()
-@@ -677,7 +770,7 @@
+@@ -677,7 +772,7 @@
  		love.graphics.clear()
  	end
  	love.graphics.push()
@@ -212,7 +214,7 @@ diff -x foreground -x movie -x music -x upscale -x script -x scriptja -x scriptp
  	local w = sh * 800 / 600
  	if w > sw then
  		local h = sw * 600 / 800
-@@ -699,8 +792,17 @@
+@@ -699,8 +794,17 @@
  		screenscale = sh / 600
  		love.graphics.scale(screenscale)
  		if wide_mode then
@@ -232,7 +234,7 @@ diff -x foreground -x movie -x music -x upscale -x script -x scriptja -x scriptp
  			screen_top = 0
  			screen_bottom = 600
  		else
-@@ -732,10 +834,10 @@
+@@ -732,10 +836,10 @@
  
  	local bg_crop_panned_this_frame
  	if state == WAITING or state == SCROLLING then
@@ -245,7 +247,7 @@ diff -x foreground -x movie -x music -x upscale -x script -x scriptja -x scriptp
  			bg_crop_pan = lint(bg_crop_pan, 0, dt * 16)
  			bg_crop_panned_this_frame = true
  		end
-@@ -1224,6 +1326,14 @@
+@@ -1224,6 +1328,14 @@
  	end
  end
  
@@ -513,8 +515,8 @@ diff -x foreground -x movie -x music -x upscale -x script -x scriptja -x scriptp
  				else
 diff -x foreground -x movie -x music -x upscale -x script -x scriptja -x scriptpt -x sound -urN /mnt/d/n7e/touch_controls.lua lovegame/touch_controls.lua
 --- /mnt/d/n7e/touch_controls.lua	1969-12-31 21:00:00.000000000 -0300
-+++ lovegame/touch_controls.lua	2022-09-11 12:32:52.799512400 -0300
-@@ -0,0 +1,116 @@
++++ lovegame/touch_controls.lua	2022-09-17 16:28:53.696303500 -0300
+@@ -0,0 +1,131 @@
 +local click_interval = 0.5
 +
 +function should_show_controls()
@@ -529,18 +531,29 @@ diff -x foreground -x movie -x music -x upscale -x script -x scriptja -x scriptp
 +	and not hiding_text_box
 +	and not is_menu
 +end
++
 +local x_pos = 800 - 90
 +local y_pos = 0
 +
++local mouse_y = 0
++local mouse_x = 0
++
 +function touch_set_mouse_pos(x, y)
++	print(string.format("set pos: %s, %s", x, y))
 +	mouse_x = x
 +	mouse_y = y
 +end
-+mouse_y = 0
-+mouse_x = 0
++
 +local shadow_offset = 3
-+local backlog_offset = 110
-+local pause_offset = 205
++
++local skip_label_offset = 0
++local skip_label_width = 60
++
++local backlog_label_offset = 110
++local backlog_label_width = 100
++
++local pause_label_offset = 200
++local pause_label_width = 85
 +
 +function is_skippable()
 +	return vars.autoscroll == "0" and skippable or gvars.skip ~= "0"
@@ -562,73 +575,77 @@ diff -x foreground -x movie -x music -x upscale -x script -x scriptja -x scriptp
 +		love.graphics.push()
 +		-- sombras azuis e pretas
 +		if is_skippable() then
-+			if is_touch_clicking(0, 60) then
++			if is_mouse_positioned(skip_label_offset, skip_label_width) then
 +				love.graphics.setColor(0, 0, 255)
-+				love.graphics.printf("Skip", x_pos + shadow_offset, y_pos + shadow_offset, 60, "center")
++				love.graphics.printf("Skip", x_pos + shadow_offset, y_pos + shadow_offset, skip_label_width, "center")
 +			else
 +				love.graphics.setColor(0, 0, 0)
-+				love.graphics.printf("Skip", x_pos + shadow_offset, y_pos + shadow_offset, 60, "center")
++				love.graphics.printf("Skip", x_pos + shadow_offset, y_pos + shadow_offset, skip_label_width, "center")
 +			end
 +		else
 +			love.graphics.setColor(0, 0, 0)
-+			love.graphics.printf("Skip", x_pos, y_pos, 60, "center")
++			love.graphics.printf("Skip", x_pos, y_pos, skip_label_width, "center")
 +		end
 +
-+		if is_touch_clicking(backlog_offset, 100) then
++		if is_mouse_positioned(backlog_label_offset, backlog_label_width) then
 +			love.graphics.setColor(0, 0, 255)
-+			love.graphics.printf("Backlog", x_pos - backlog_offset + shadow_offset, y_pos + shadow_offset, 100, "center")
++			love.graphics.printf("Backlog", x_pos - backlog_label_offset + shadow_offset, y_pos + shadow_offset, backlog_label_width, "center")
 +		else
 +			love.graphics.setColor(0, 0, 0)
-+			love.graphics.printf("Backlog", x_pos - backlog_offset + shadow_offset, y_pos + shadow_offset, 100, "center")
++			love.graphics.printf("Backlog", x_pos - backlog_label_offset + shadow_offset, y_pos + shadow_offset, backlog_label_width, "center")
 +		end
 +
-+		if is_touch_clicking(pause_offset, 85) then
++		if is_mouse_positioned(pause_label_offset, pause_label_width) then
 +			love.graphics.setColor(0, 0, 255)
-+			love.graphics.printf("Pause", x_pos - pause_offset + shadow_offset, y_pos + shadow_offset, 100, "center")
++			love.graphics.printf("Pause", x_pos - pause_label_offset + shadow_offset, y_pos + shadow_offset, pause_label_width, "center")
 +		else
 +			love.graphics.setColor(0, 0, 0)
-+			love.graphics.printf("Pause", x_pos - pause_offset + shadow_offset, y_pos + shadow_offset, 100, "center")
++			love.graphics.printf("Pause", x_pos - pause_label_offset + shadow_offset, y_pos + shadow_offset, pause_label_width, "center")
 +		end
 +		
 +		love.graphics.setColor(255, 255, 255)
 +		if is_skippable() then
-+			love.graphics.printf("Skip", x_pos, y_pos, 60, "center")
++			love.graphics.printf("Skip", x_pos, y_pos, skip_label_width, "center")
 +		end
-+		love.graphics.printf("Backlog", x_pos - backlog_offset, y_pos, 100, "center")
-+		love.graphics.printf("Pause", x_pos - pause_offset, y_pos, 100, "center")
++		love.graphics.printf("Backlog", x_pos - backlog_label_offset, y_pos, backlog_label_width, "center")
++		love.graphics.printf("Pause", x_pos - pause_label_offset, y_pos, pause_label_width, "center")
 +		love.graphics.pop()
 +	end
 +end
 +
-+function is_touch_clicking(offset, width)
++function is_mouse_positioned(offset, width)
 +	return mouse_x >= x_pos - offset and (x_pos - offset) + width > mouse_x
 +		and mouse_y >= y_pos and y_pos + 50 > mouse_y
 +end
 +
 +function is_touch_skipping()
-+	if x_pos and y_pos and should_show_controls() then
-+		return is_touch_clicking(0, 60) and (touches_amount == 1 or love.mouse.isDown(1))
++	if last_skip_press and x_pos and y_pos and should_show_controls() then
++		if is_mouse_positioned(skip_label_offset, skip_label_width) then
++			return touches_amount == 1 or love.mouse.isDown(1)
++		end
 +	end
 +end
 +
-+function handle_click_event()
++function touch_handle_click_event()
 +	if should_show_controls() then
-+		print(string.format("input: %s, %s", mouse_x, mouse_y))
-+		print(string.format("offset: %s, %s", x_pos, y_pos))
++		local time = love.timer.getTime()
 +		-- Instant skip/fast forward
-+		if is_touch_clicking(0, 50) then
-+			local time = love.timer.getTime()
++		if is_mouse_positioned(skip_label_offset, skip_label_width) then
 +			if last_skip_press and time <= last_skip_press + click_interval then
 +				love.keypressed("k")
 +			end
 +			last_skip_press = time
++			return true
 +		end
-+		if is_touch_clicking(backlog_offset, 100) then
++		if is_mouse_positioned(backlog_label_offset, backlog_label_width) then
 +			love.keypressed("b")
++			return true
 +		end
-+		if is_touch_clicking(pause_offset, 85) then
++		if is_mouse_positioned(pause_label_offset, pause_label_width) then
 +			love.keypressed("escape")
++			return true
 +		end
 +	end
++	return false
 +end
 \ No newline at end of file
