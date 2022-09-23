@@ -1,7 +1,8 @@
 # Never7 Eternal Edition for mobile devices
-A patch to make the game playable in mobile devices (specifically for Android devices).
+A patch to make the game playable on mobile devices (specifically for Android devices).
 * [What's working](#whats-working)
 * [Notes](#notes)
+* [Saving](#saving)
 * [TODO](#todo)
 * [FAQ](#faq)
 * [Gameplay](#gameplay)
@@ -17,6 +18,9 @@ A patch to make the game playable in mobile devices (specifically for Android de
 * The game is automatically saved when it loses its focus (when it's running in background or when you open the system's notification panel) and there's no option to disable the auto saving for now.
 * The sound won't pause if you leave the game open in background.
 * Connecting a headset/headphone while the game is open won't route the sound to the connected device but instead it will stop playing any sound. Connect whatever you want to connect first and then open the game. This seems to be a problem with the engine itself.
+## Saving
+By default, everything (save states, system save) is saved to `/data/data/org.love2d.android/files/save/Never7Eternal`, however, if you're a unprivileged user of your own device (if your device isn't rooted), you can't access this directory.  
+To change the save directory to an accessible one through common means, replace the `conf.lua` file with this [file](https://files.catbox.moe/eos49l.lua). Now this directory will be `/storage/emulated/0/Android/data/org.love2d.android/save/Never7Eternal`.
 ## TODO
 * ~~GUI elements for instant skip and fast forwarding~~ (done in v0.2)
 * maybe more...
@@ -29,7 +33,7 @@ A: No. Don't even try it. You will miserably fail to make it work, this version 
 **Q: Does transferring the files by the usual way (through the Windows Explorer) works?**  
 A: Yes if you believe you can do it. But keep in mind that this is the most slower way to transfer files and it tends to fail.
 ## Gameplay
-You can do fast forward, instant skip and open the backlog with the GUI controls. Scrolling the menus using one of your fingers works just fine. 
+You can fast forward, instant skip and open the backlog with the GUI controls. Scrolling the menus using one of your fingers works just fine. 
 * Tapping with two fingers goes back or opens the in-game menu
 * Double tap the "Skip" text for instant skip, hold it for fast forwarding
 ## How to use this patch to play the VN
