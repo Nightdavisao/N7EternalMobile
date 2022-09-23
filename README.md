@@ -19,7 +19,7 @@ A patch to make the game playable on mobile devices (specifically for Android de
 * The sound won't pause if you leave the game open in background.
 * Connecting a headset/headphone while the game is open won't route the sound to the connected device but instead it will stop playing any sound. Connect whatever you want to connect first and then open the game. This seems to be a problem with the engine itself.
 ## Saving
-By default, everything (save states, system save) is saved to `/data/data/org.love2d.android/files/save/Never7Eternal`, however, if you're a unprivileged user of your own device (if your device isn't rooted), you can't access this directory.  
+By default, everything (save states, system save) is saved to `/data/data/org.love2d.android/files/save/Never7Eternal`, however, if you're an unprivileged user of your own device (if your device isn't rooted), you can't access this directory.  
 To change the save directory to an accessible one through common means, replace the `conf.lua` file with this [file](https://files.catbox.moe/eos49l.lua). Now this directory will be `/storage/emulated/0/Android/data/org.love2d.android/save/Never7Eternal`.
 ## TODO
 * ~~GUI elements for instant skip and fast forwarding~~ (done in v0.2)
