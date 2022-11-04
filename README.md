@@ -1,5 +1,5 @@
-# Never7 Eternal Edition for mobile devices
-A patch to make the game playable on mobile devices (specifically for Android devices).
+# Never7 Eternal Edition for Android
+A patch to make the game playable on Android (only for Android devices)
 * [What's working](#whats-working)
 * [Notes](#notes)
 * [Saving](#saving)
@@ -26,7 +26,7 @@ To change the save directory to an accessible one through common means, replace 
 * maybe more...
 ## FAQ
 *No one really asked me anything below so call it a QA*  
-**Q: Does it work in iOS?**  
+**Q: Does it work on iOS?**  
 A: I don't know. [You can tell me](https://www.reddit.com/message/compose/?to=nightdavisao) and I will gladly edit this answer.  
 **Q: Does it work with the LÖVE's Play Store version?**  
 A: No. Don't even try it. You will miserably fail to make it work, this version is just too outdated.  
@@ -38,7 +38,7 @@ You can fast forward, instant skip and open the backlog with the GUI controls. S
 * Double tap the "Skip" text for instant skip, hold it for fast forwarding
 ## How to use this patch to play the VN
 Below I explain how to transfer the game using Android's ADB in a Windows enviroment. If you're familiar with ADB and stuff already, I assume you just need to read this: Install the [LÖVE engine's APK](https://github.com/love2d/love/releases/download/11.4/love-11.4-android.apk), extract the game file (it's just a compressed zip file), [download](https://github.com/Nightdavisao/N7EternalMobile/releases/latest) and extract the patch over the extracted game, then transfer the files to `/sdcard/Android/data/org.love2d.android/files/games/lovegame` and now you're ready to play by opening the engine app.  
-Of course, you can do all of this in your device without relying on a computer, but will it take the double of the free space you need (about 10 GBs) in order to do this.
+Of course, you can do all of this without relying on a computer, but will it take the double of the free space you need (about 10 GBs), that if you're not locked behind [Google's storage restrictions](https://developer.android.com/about/versions/11/privacy/storage#file-access) (this only applies up to Android 11).
 ### Transferring the whole game from a PC to your Android device
 * First of all, [you should have the game already downloaded](https://www.mediafire.com/file/nshjldhr3zzm760/n7e.love/file).
 * Also, you should make sure your device has enough free space (at least 5 GBs).  
