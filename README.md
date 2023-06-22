@@ -53,21 +53,21 @@ You can fast forward, instant skip and open the backlog with the GUI controls. S
 </details>
 <details>
 <summary>ADB way (if you have a working computer)</summary>
-1. Download the game from [here](https://www.mediafire.com/file/nshjldhr3zzm760/n7e.love/file).
-2. Ensure your device has at least 5 GB of free space.
+1. Download the game from [here](https://www.mediafire.com/file/nshjldhr3zzm760/n7e.love/file).  
+2. Ensure your device has at least 5 GB of free space.  
 3. Download the [SDK platform-tools](https://developer.android.com/studio/releases/platform-tools) for transferring the game.
-4. Download and install the LÖVE engine's APK from [here](https://github.com/love2d/love/releases/download/11.4/love-11.4-android.apk).
-5. On your computer, create a folder named `games`, and inside it, create another folder called `lovegame`.
-6. Extract the game's .love file to the `lovegame` folder using an extraction tool like WinRAR or 7zip. Ensure that all the extracted files are within this folder.
+4. Download and install the LÖVE engine's APK from [here](https://github.com/love2d/love/releases/download/11.4/love-11.4-android.apk).  
+5. On your computer, create a folder named `games`, and inside it, create another folder called `lovegame`.  
+6. Extract the game's .love file to the `lovegame` folder using an extraction tool like WinRAR or 7zip. Ensure that all the extracted files are within this folder.  
 7. Download the pre-patched game files from [here](https://github.com/Nightdavisao/N7EternalMobile/releases/latest).
-8. Extract the downloaded files and overwrite the existing files in the `lovegame` folder.
-9. Extract the downloaded SDK platform-tools to a location on your computer.
-10. Connect your device to your computer using a USB cable.
+8. Extract the downloaded files and overwrite the existing files in the `lovegame` folder.  
+9. Extract the downloaded SDK platform-tools to a location on your computer.  
+10. Connect your device to your computer using a USB cable.  
 11. Enable USB debugging on your device. You can find instructions [here](https://developer.android.com/studio/debug/dev-options).
-12. Open a command prompt (cmd) on your computer by pressing Windows+R, typing `cmd`, and pressing Enter.
-13. In the command prompt, navigate to the location of the extracted platform-tools folder by using the `cd` command.
-14. Type `adb.exe devices` in the command prompt and press Enter to verify that your device is listed.
-15. If your device is listed, type the following command: `adb.exe push (location path to the 'games' folder) /sdcard/Android/data/org.love2d.android/files/`. Replace `(location path to the 'games' folder)` with the actual path to the `games` folder on your computer.
-16. Press Enter and wait for the transfer to complete.
-17. Launch the LÖVE engine app on your Android device to open and play the game.
+12. Open a command prompt (cmd) on your computer by pressing Windows+R, typing `cmd`, and pressing Enter.  
+13. In the command prompt, navigate to the location of the extracted platform-tools folder by using the `cd` command.  
+14. Type `adb.exe devices` in the command prompt and press Enter to verify that your device is listed.  
+15. If your device is listed, type the following command: `adb.exe push (location path to the 'games' folder) /sdcard/Android/data/org.love2d.android/files/`. Replace `(location path to the 'games' folder)` with the actual path to the `games` folder on your computer.  
+16. Press Enter and wait for the transfer to complete.  
+17. Launch the LÖVE engine app on your Android device to open and play the game.  
 </details>
