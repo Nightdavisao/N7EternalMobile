@@ -3,7 +3,6 @@ A patch to make the game playable on Android (only for Android devices)
 * [What's working](#whats-working)
 * [Notes](#notes)
 * [Saving](#saving)
-* [TODO](#todo)
 * [FAQ](#faq)
 * [Gameplay](#gameplay)
 * [How to install it](#how-to-install)
@@ -40,7 +39,7 @@ You can fast forward, instant skip and open the backlog with the GUI controls. S
 7. Now you're ready to play by opening the engine app.
 </details>
 <details>
-<markdown="span">Android 11 and up way</summary>
+<summary markdown="span">Android 11 and up way</summary>
 **BE SURE TO HAVE AT LEAST 8 GIGS OF FREE SPACE IN YOUR DEVICE. (THAT'S PROBABLY THE DOUBLE OF THE GAME'S SIZE)**
 
 1. Download the VN if you haven't already, it's free (KID is defunct and MAGES doesn't care bruh) and you can get it [here](https://www.mediafire.com/file/nshjldhr3zzm760/n7e.love/file).
