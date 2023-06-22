@@ -34,7 +34,7 @@ You can fast forward, instant skip and open the backlog with the GUI controls. S
 2. [Download a proper file manager](https://github.com/zhanghai/MaterialFiles/releases/latest), we will need it to transfer the game files to the right directory.  
 3. Download the [LÖVE engine's APK](https://github.com/love2d/love/releases/download/11.4/love-11.4-android.apk)
 4. Install everything you downloaded (I'm talking about the APKs, not the VN)
-5. Extract the game's .love file to `(Internal storage)/Android/data/org.love2d.android/files/games/lovegame` using the file manager you downloaded. (You can extract it through the `Open with...` option when you long press the file or opening the file manager and navigating to the file's location, but note that all the extracted files should be inside this folder.)
+5. Extract the game's .love file to `(Internal storage)/Android/data/org.love2d.android/files/games/lovegame` using the file manager you downloaded. (You can extract it through the `Open with...` option when you long press the file. Rename the file to `n7e.zip` if you can't find the option.)
 6. Download the pre-patched game files [here](https://github.com/Nightdavisao/N7EternalMobile/releases/latest) and extract it to the same folder you extracted the game's .love file. Overwrite everything when asked.
 7. Now you're ready to play by opening the engine app.
 </details>
