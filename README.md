@@ -53,8 +53,8 @@ You can fast forward, instant skip and open the backlog with the GUI controls. S
 </details>
 <details>
 <summary markdown="span">ADB way (if you have a working computer)</summary>
-1. Download the game from [here](https://www.mediafire.com/file/nshjldhr3zzm760/n7e.love/file).
-2. Ensure your device has at least 5 GB of free space.
+1. Ensure your device has at least 5 GB of free space.
+2. Download the game from [here](https://www.mediafire.com/file/nshjldhr3zzm760/n7e.love/file).
 3. Download the [SDK platform-tools](https://developer.android.com/studio/releases/platform-tools) for transferring the game.
 4. Download and install the LÖVE engine's APK from [here](https://github.com/love2d/love/releases/download/11.4/love-11.4-android.apk).
 5. On your computer, create a folder named `games`, and inside it, create another folder called `lovegame`.
