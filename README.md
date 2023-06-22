@@ -52,7 +52,7 @@ You can fast forward, instant skip and open the backlog with the GUI controls. S
 8. Now you're ready to play by launching the game's engine app.
 </details>
 <details>
-<summary>ADB way (if you have a working computer)</summary>
+<summary markdown="span">ADB way (if you have a working computer)</summary>
 1. Download the game from [here](https://www.mediafire.com/file/nshjldhr3zzm760/n7e.love/file).  
 2. Ensure your device has at least 5 GB of free space.  
 3. Download the [SDK platform-tools](https://developer.android.com/studio/releases/platform-tools) for transferring the game.
