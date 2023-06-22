@@ -53,7 +53,6 @@ You can fast forward, instant skip and open the backlog with the GUI controls. S
 </details>
 <details>
 <summary markdown="span">ADB way (if you have a working computer)</summary>
-### Transferring the whole game from a PC to your Android device
 * First of all, [you should have the game already downloaded](https://www.mediafire.com/file/nshjldhr3zzm760/n7e.love/file).
 * Also, you should make sure your device has enough free space (at least 5 GBs).  
 * Download the [SDK platform-tools](https://developer.android.com/studio/releases/platform-tools) to be able to transfer the whole game to your device. 
