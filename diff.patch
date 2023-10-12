@@ -1,385 +1,669 @@
-diff -x foreground -x movie -x music -x upscale -x script -x scriptja -x scriptpt -x sound -urN /mnt/d/n7e/conf.lua lovegame/conf.lua
---- /mnt/d/n7e/conf.lua	2022-02-04 00:50:38.000000000 -0300
-+++ lovegame/conf.lua	2022-09-15 18:16:27.464050000 -0300
-@@ -1,10 +1,12 @@
-+io.stdout:setvbuf('no')
-+
- function love.conf(t)
+diff -x foreground -x movie -x music -x upscale -x script -x scriptja -x scriptpt -x sound -x .vscode -urN n7e/backlog.lua n7e_old/backlog.lua
+--- n7e/backlog.lua	2023-06-25 18:03:36.000000000 -0300
++++ n7e_old/backlog.lua	2023-06-25 18:02:26.000000000 -0300
+@@ -148,4 +148,4 @@
+ 	end
+ 	clicked = false
+ 	--love.graphics.pop()
+-end
++end
+\ No newline at end of file
+diff -x foreground -x movie -x music -x upscale -x script -x scriptja -x scriptpt -x sound -x .vscode -urN n7e/conf.lua n7e_old/conf.lua
+--- n7e/conf.lua	2023-06-27 11:00:30.000000000 -0300
++++ n7e_old/conf.lua	2023-06-25 09:23:12.000000000 -0300
+@@ -2,15 +2,12 @@
  	t.identity = "Never7Eternal"
- 	t.window.title = "Never7 -the end of infinity- Eternal Edition v0.4"
+ 	t.window.title = "Never7 -the end of infinity- Eternal Edition v0.5"
  	t.window.icon = "icon-high.png"
--	t.window.width = 800
--	t.window.height = 600
--	t.window.resizable = true
-+	t.window.width = 0
-+	t.window.height = 0
-+	t.window.fullscreen = true
+-	t.window.width = 0
+-	t.window.height = 0
+-	t.window.fullscreen = true
+-	-- t.window.resizable = true
+-	t.modules.joystick = true
+-	t.modules.touch = true
+-	
++	t.window.width = 800
++	t.window.height = 600
++	t.window.resizable = true
  	t.gammacorrect = false
  	t.accelerometerjoystick = false
  	t.modules.data = false
-diff -x foreground -x movie -x music -x upscale -x script -x scriptja -x scriptpt -x sound -urN /mnt/d/n7e/main.lua lovegame/main.lua
---- /mnt/d/n7e/main.lua	2022-02-26 23:04:20.000000000 -0300
-+++ lovegame/main.lua	2022-09-17 16:09:04.880324800 -0300
-@@ -17,9 +17,9 @@
++	t.modules.joystick = false
+ 	t.modules.physics = false
+ end
+diff -x foreground -x movie -x music -x upscale -x script -x scriptja -x scriptpt -x sound -x .vscode -urN n7e/main.lua n7e_old/main.lua
+--- n7e/main.lua	2023-10-12 20:37:03.926561100 -0300
++++ n7e_old/main.lua	2023-06-25 17:01:00.000000000 -0300
+@@ -1,33 +1,3 @@
+-global_os = love.system.getOS()
+-print(("global_os: %s"):format(global_os))
+-
+-function check_mobile()
+-	return global_os == "Android" or global_os == "iOS"
+-end
+-
+-function check_nx()
+-	-- check if we're on the switch (love-nx)
+-	return global_os == "NX"
+-end
+-
+--- "dirty" workaround for the fact that love-nx doesn't change the position of the mouse
+-fake_mouse_position = {x = 0, y = 0}
+-
+-local oggetmousepos = love.mouse.getPosition
+-function love.mouse.getPosition()
+-	if check_nx() then
+-		return fake_mouse_position.x, fake_mouse_position.y
+-	else
+-		return oggetmousepos()
+-	end
+-end
+-
+-function tablelength(T)
+-	local count = 0
+-	for _ in pairs(T) do count = count + 1 end
+-	return count
+-end
+-
+ love.filesystem.load("utf8.lua")()
+ love.filesystem.load("conv.lua")()
+ love.filesystem.load("scripting.lua")()
+@@ -47,8 +17,6 @@
  love.filesystem.load("tips.lua")()
  love.filesystem.load("text_input.lua")()
  love.filesystem.load("append_editor.lua")()
-+love.filesystem.load("touch_controls.lua")()
+-love.filesystem.load("touch_controls.lua")()
+-
  
  assets = {}
--
- local fsread = love.filesystem.read
- function love.filesystem.read(path)
- 	if path:match("^script/") then
-@@ -49,19 +49,17 @@
+ 
+@@ -81,11 +49,7 @@
  	return loaded_snds[path]
  end
  
-+
+-
  function updatewinmode()
--	if gvars.winmode == "0" then
--		love.window.setMode(800, 600, {resizable = true, fullscreen = false})
--	elseif gvars.winmode == "1" then
--		love.window.setMode(0, 0, {resizable = false, fullscreen = true})
--	elseif gvars.winmode == "2" then
--		love.window.setMode(800, 600, {resizable = false, fullscreen = false})
--	elseif gvars.winmode == "3" then
--		love.window.setMode(1600, 1200, {resizable = false, fullscreen = false})
+-	if check_mobile() or check_nx() then
+-		return
 -	end
+ 	if gvars.winmode == "0" then
+ 		love.window.setMode(800, 600, {resizable = true, fullscreen = false})
+ 	elseif gvars.winmode == "1" then
+@@ -98,8 +62,6 @@
  end
  
  function love.load()
-+	-- touch support
-+	begin_scroll_y = nil
-+	begin_y = nil
-+	end_y = nil
-+	doing_touch = false
-+	-- loading instructions
+-	wait = true
+-	wait_timer = 0
  	love.keyboard.setKeyRepeat(true)
  	love.graphics.setDefaultFilter("linear", "linear")
  	font = love.graphics.newFont(font_filename, 26)
-@@ -86,6 +84,94 @@
- 	append_editor_load()
- end
+@@ -219,7 +181,7 @@
+ local last_second = love.timer.getTime()
+ local play_time = 0
+ local time = 0
+-AUTO_PLAY = false
++local auto_play = false
+ local started_waiting
  
-+function tablelength(T)
-+	local count = 0
-+	for _ in pairs(T) do count = count + 1 end
-+	return count
-+end
-+
-+touches_amount = 0
-+function love.touchpressed(id, x, y, dx, dy, pressure)
-+	if doing_touch == false then
-+		begin_y = y
-+		begin_scroll_y = y
-+		doing_touch = true
-+	end
-+	touches_amount = tablelength(love.touch.getTouches())
-+end
-+
-+local is_pressing_up = false
-+local is_pressing_down = false
-+
-+function love.touchmoved(id, x, y, dx, dy, pressure)
-+	if touches_amount > 1 then
-+		return
-+	end
-+	-- bg pan
-+	if y and begin_y then
-+		if y > begin_y then
-+			is_pressing_up = true
-+			is_pressing_down = false
-+		elseif begin_y > y then
-+			is_pressing_down = true
-+			is_pressing_up = false
-+		else
-+			is_pressing_up = false
-+			is_pressing_down = false
-+		end
-+	end
-+	if state == BACKLOG or state == PLAYING_LOG or state == FLOW_MENU then
-+		if begin_scroll_y then
-+			should_scroll = 0
-+			scroll_factor = 0.5
-+			if state == BACKLOG then
-+				scroll_factor = (20 / tablelength(backlog)) * 0.100
-+			end
-+
-+			if (y - begin_scroll_y) - scroll_factor > 0 then
-+				should_scroll = 1
-+			elseif (y - begin_scroll_y) - scroll_factor < -scroll_factor then
-+				should_scroll = -1
-+			else
-+				should_scroll = 0
-+			end
-+
-+			if state == BACKLOG then
-+				scroll_backlog(should_scroll)
-+			elseif state == FLOW_MENU then
-+				flow_menu_scroll(should_scroll)
-+			elseif state == PLAYING_LOG then
-+				playing_log_scroll(should_scroll)
-+			end
-+			begin_scroll_y = y
-+		end
-+	end
-+
-+end
-+
-+function love.touchreleased(id, x, y, dx, dy, pressure)
-+	end_y = y
-+	if doing_touch == true then
-+		if begin_y == end_y and touches_amount == 1 then
-+			love.mousepressed(x, y, 1)
-+		end
-+
-+		if touches_amount == 2 then
-+			love.keypressed("escape")
-+		end
-+
-+		begin_scroll_y = nil
-+		begin_y = nil
-+		end_y = nil
-+		doing_touch = false
-+		touches_amount = 0
-+		is_pressing_up = false
-+		is_pressing_down = false
-+		touch_set_mouse_pos(0, 0)
-+	end
-+end
-+
-+
- DELAYING = 0
- SCROLLING = 1
- WAITING = 2
-@@ -194,7 +280,7 @@
+ local function is_not_stuck_in_effect()
+@@ -230,9 +192,7 @@
+ 
+ local sound
+ local last_cg = 0
+-local gamepad_is_key_pressing = false
+ function love.update(dt)
+-	wait_timer = wait_timer + dt
+ 	local time = love.timer.getTime()
+ 	if time >= last_cg + 0.5 then
+ 		collectgarbage("step")
+@@ -255,8 +215,8 @@
  		delay = delay + 60
  		state = SCROLLING
  	end
--	if vars.autoscroll == "0" and love.keyboard.isDown("lctrl") and (skippable or gvars.skip ~= "0") then
-+	if vars.autoscroll == "0" and (love.keyboard.isDown("lctrl") or is_touch_skipping()) and (skippable or gvars.skip ~= "0") then
+-	if (((love.keyboard.isDown("lctrl") or is_touch_skipping() or (ACTIVE_JOYSTICK and ACTIVE_JOYSTICK:isGamepadDown("leftshoulder"))) and (skippable or gvars.skip ~= "0")) or
+-			(AUTO_PLAY and state == WAITING and started_waiting and love.timer.getTime() - started_waiting >= 2))
++	if ((love.keyboard.isDown("lctrl") and (skippable or gvars.skip ~= "0")) or
++			(auto_play and state == WAITING and started_waiting and love.timer.getTime() - started_waiting >= 2))
+ 		and vars.autoscroll == "0" and is_not_stuck_in_effect() then
  		advance()
  	end
- 	if type(bgm) == "string" then
-@@ -237,7 +323,7 @@
+@@ -283,37 +243,6 @@
+ 	while delay < 1 and state == SCROLLING and not waiting_sound and is_not_stuck_in_effect() do
+ 		step_script()
+ 	end
+-
+-	if ACTIVE_JOYSTICK ~= nil then
+-		local right_axis = ACTIVE_JOYSTICK:getGamepadAxis("righty")
+-		love.wheelmoved(0, -right_axis)
+-		local left_yaxis = ACTIVE_JOYSTICK:getGamepadAxis("lefty")
+-		local left_xaxis = ACTIVE_JOYSTICK:getGamepadAxis("leftx")
+-		if left_xaxis < -0.5 then
+-			if not gamepad_is_key_pressing then
+-				love.keypressed("left")
+-				gamepad_is_key_pressing = true
+-			end
+-		elseif left_xaxis > 0.5 then
+-			if not gamepad_is_key_pressing then
+-				love.keypressed("right")
+-				gamepad_is_key_pressing = true
+-			end
+-		else
+-			gamepad_is_key_pressing = false
+-		end
+-		
+-		-- delay it a bit so it doesn't scroll too fast
+-		if wait_timer > 0.1 then
+-			if left_yaxis < -0.5 then
+-				love.keypressed("up")
+-				wait_timer = 0
+-			elseif left_yaxis > 0.5 then
+-				love.keypressed("down")
+-				wait_timer = 0
+-			end
+-		end
+-	end
+ end
  
+ function has(table, item)
+@@ -329,136 +258,9 @@
+ 	return not polling_for or has(polling_for, p)
+ end
+ 
+-ACTIVE_JOYSTICK = nil
+-function handle_confirm_button()
+-	if state == WAITING or (state == CHOICE and not is_menu) then
+-		love.keypressed("f1")
+-	else
+-		love.keypressed("escape")
+-	end
+-end
+-
+-function love.gamepadpressed(joystick, button)
+-	if joystick ~= ACTIVE_JOYSTICK then
+-		ACTIVE_JOYSTICK = joystick
+-	end
+-
+-	if button == "dpup" then
+-		love.keypressed("up")
+-	elseif button == "dpdown" then
+-		love.keypressed("down")
+-	elseif button == "dpleft" then
+-		love.keypressed("left")
+-	elseif button == "dpright" then
+-		love.keypressed("right")
+-	end
+-
+-	print(("swap_ab_buttons: %s"):format(gvars.swap_ab_buttons))
+-	-- this is confusing because the buttons are swapped on the switch (a is b and b is a)
+-	if button == "a" then -- hides the textbox or advances
+-		-- the option to swap the buttons actually makes the buttons do what they say they do
+-		if gvars.swap_ab_buttons == "1" then
+-			handle_confirm_button()
+-		else
+-			love.keypressed("return")
+-		end
+-	elseif button == "b" then
+-		if gvars.swap_ab_buttons == "1" then
+-			love.keypressed("return")
+-		else
+-			handle_confirm_button()
+-		end
+-	elseif button == "x" then
+-		if not is_menu then
+-			love.keypressed("escape") -- right click
+-		else
+-			love.keypressed("r")
+-		end
+-	elseif button == "y" then
+-		love.keypressed("b") -- backlog
+-	elseif button == "rightshoulder" then
+-		love.keypressed("f2") -- auto mode
+-	elseif button == "back" then
+-		love.keypressed("k") -- instant skip
+-	end
+-end
+-
+-function love.gamepadaxis(joystick, axis, value)
+-	if joystick ~= ACTIVE_JOYSTICK then
+-		ACTIVE_JOYSTICK = joystick
+-	end
+-end
+-
+-local begin_scroll_y = 0
+-
+-function love.touchmoved(id, x, y)
+-	fake_mouse_position.x = x
+-	fake_mouse_position.y = y
+-	love.mousemoved(x, y)
+-	if state == BACKLOG or state == PLAYING_LOG or state == FLOW_MENU then
+-		local should_scroll = 0
+-
+-		if (y - begin_scroll_y) > 0 then
+-			should_scroll = 1
+-		elseif (y - begin_scroll_y) < 0 then
+-			should_scroll = -1
+-		end
+-
+-		if state == BACKLOG then
+-			scroll_backlog(should_scroll)
+-		elseif state == FLOW_MENU then
+-			flow_menu_scroll(should_scroll)
+-		elseif state == PLAYING_LOG then
+-			playing_log_scroll(should_scroll)
+-		end
+-		begin_scroll_y = y
+-	end
+-end
+-
+-local doing_touch = false
+-local begin_y = 0
+-
+-touches_amount = 0
+-function love.touchpressed(id, x, y)
+-	love.mousemoved(x, y)
+-	if doing_touch == false then
+-		begin_y = y
+-		begin_scroll_y = y
+-		doing_touch = true
+-	end
+-	touches_amount = tablelength(love.touch.getTouches())
+-	if check_nx() then
+-		fake_mouse_position.x = x
+-		fake_mouse_position.y = y
+-		love.mousepressed(x, y, 1)
+-	end
+-end
+-
+-function love.touchreleased(id, x, y)
+-	if check_mobile() then
+-		if doing_touch == true then
+-			if begin_y == y and touches_amount == 1 then
+-				love.mousepressed(x, y, 1)
+-			end
+-			if touches_amount == 2 then
+-				love.keypressed("escape")
+-			end
+-			begin_scroll_y = 0
+-			begin_y = 0
+-			touches_amount = 0
+-			doing_touch = false
+-			touch_set_mouse_pos(0, 0)
+-		end
+-	end
+-end
+-
  mousex, mousey = 0, 0
- function love.mousemoved(x, y)
--	local sw, sh = love.graphics.getPixelDimensions()
-+	local sw, sh = love.graphics.getDimensions()
+-function love.mousemoved(x, y, dx, dy, is_touch)
+-	if is_touch then
+-		return
+-	end
+-
+-	local sw, sh = love.graphics.getDimensions()
++function love.mousemoved(x, y)
++	local sw, sh = love.graphics.getPixelDimensions()
  	local w = sh * 800 / 600
  	if w > sw then
  		local h = sw * 600 / 800
-@@ -264,9 +350,15 @@
+@@ -485,15 +287,9 @@
  end
  
  local last_input = -10
--function love.mousepressed(x, y, button)
-+function love.mousepressed(x, y, button, istouch)
-+	if istouch == true then
-+		return
-+	end
+-function love.mousepressed(x, y, button, is_touch)
+-	if is_touch then
+-		return
+-	end
++function love.mousepressed(x, y, button)
  	last_input = love.timer.getTime()
  	if button == 1 then
-+		if touch_handle_click_event() == true then
-+			return
-+		end
+-		if touch_handle_click_event() == true then
+-			return
+-		end
  		hiding_text_box = false
  		if state == POLLING and is_polling_for("click") then
  			vars.setting = "1"
-@@ -467,6 +559,7 @@
- function love.quit()
- 	save_system()
- 	save_game("auto")
-+	print(is_menu)
- 	print("quit safely")
- end
- 
-@@ -666,6 +759,8 @@
+@@ -556,11 +352,11 @@
+ 		end
+ 	elseif key == "f2" then
+ 		if not isrepeat and is_not_stuck_in_effect() and state == WAITING then
+-			if AUTO_PLAY then
+-				AUTO_PLAY = false
++			if auto_play then
++				auto_play = false
+ 				play_gui_sfx(assets.ps2_auto_off_sfx)
+ 			else
+-				AUTO_PLAY = true
++				auto_play = true
+ 				play_gui_sfx(assets.ps2_auto_on_sfx)
+ 			end
+ 		end
+@@ -918,7 +714,6 @@
  	if is_waiting_for_load() then
  		return
  	end
-+	-- Make sure game elements are shown if certain area is obstructed by screen notch or even the system ui
-+	local safe_x = love.window.getSafeArea()
+-	safe_x = love.window.getSafeArea()
  	wide_mode = gvars.unlockaspect ~= "0" or wide_forcing
  	wide_forcing = false
  	vars.fps = love.timer.getFPS()
-@@ -677,7 +772,7 @@
+@@ -930,7 +725,7 @@
  		love.graphics.clear()
  	end
  	love.graphics.push()
--	local sw, sh = love.graphics.getPixelDimensions()
-+	local sw, sh = love.graphics.getDimensions()
+-	local sw, sh = love.graphics.getDimensions()
++	local sw, sh = love.graphics.getPixelDimensions()
  	local w = sh * 800 / 600
  	if w > sw then
  		local h = sw * 600 / 800
-@@ -699,8 +794,17 @@
+@@ -952,17 +747,8 @@
  		screenscale = sh / 600
  		love.graphics.scale(screenscale)
  		if wide_mode then
--			screen_left = -x / screenscale
--			screen_right = 800 + x / screenscale
-+			local orientation = love.window.getDisplayOrientation()
-+			if orientation == "landscape" then
-+				screen_left = (-x + safe_x) / screenscale
-+			else
-+				screen_left = -x / screenscale
-+			end
-+			if orientation == "landscapeflipped" then
-+				screen_right = (800 + x) - safe_x / screenscale
-+			else
-+				screen_right = 800 + x / screenscale 
-+			end
+-			local orientation = love.window.getDisplayOrientation()
+-			if orientation == "landscape" then
+-				screen_left = (-x + safe_x) / screenscale
+-			else
+-				screen_left = -x / screenscale
+-			end
+-			if orientation == "landscapeflipped" then
+-				screen_right = (800 + x) - safe_x / screenscale
+-			else
+-				screen_right = 800 + x / screenscale 
+-			end
++			screen_left = -x / screenscale
++			screen_right = 800 + x / screenscale
  			screen_top = 0
  			screen_bottom = 600
  		else
-@@ -732,10 +836,10 @@
- 
- 	local bg_crop_panned_this_frame
- 	if state == WAITING or state == SCROLLING then
--		if love.keyboard.isDown("down") or love.keyboard.isDown("s") then
-+		if love.keyboard.isDown("down") or love.keyboard.isDown("s") or is_pressing_down then
- 			bg_crop_pan = lint(bg_crop_pan, 1, dt * 16)
- 			bg_crop_panned_this_frame = true
--		elseif love.keyboard.isDown("up") or love.keyboard.isDown("w") then
-+		elseif love.keyboard.isDown("up") or love.keyboard.isDown("w") or is_pressing_up then
- 			bg_crop_pan = lint(bg_crop_pan, 0, dt * 16)
- 			bg_crop_panned_this_frame = true
+@@ -1147,7 +933,7 @@
+ 			love.graphics.draw(fg.cur, x - fg.cur:getWidth() / 4, 600 - fg.cur:getHeight() / 2, 0, 0.5)
  		end
-@@ -1224,6 +1328,14 @@
  	end
- end
- 
-+function love.focus(focused)
-+	if focused == false and gvars.autosave == "1" then
-+		print("auto saving since the game is unfocused")
-+		save_system()
-+		save_game("auto")
-+	end
-+end
-+
- function love.lowmemory()
- 	collectgarbage()
- 	save_system()
-diff -x foreground -x movie -x music -x upscale -x script -x scriptja -x scriptpt -x sound -urN /mnt/d/n7e/middleman.lua lovegame/middleman.lua
---- /mnt/d/n7e/middleman.lua	2022-02-25 22:16:38.000000000 -0300
-+++ lovegame/middleman.lua	2022-09-11 12:13:21.633158700 -0300
-@@ -23,6 +23,7 @@
+-	if AUTO_PLAY and state ~= POLLING then
++	if auto_play and state ~= POLLING then
+ 		love.graphics.setColor(1, 1, 1, 0.5)
+ 		love.graphics.draw(assets.dc_skip, love.graphics.newQuad(0, math.floor(love.timer.getTime() * 6) % 4 * 32, 32, 32, 32, 256), 16, 16, 0, 1.25, 1.25)
+ 	end
+diff -x foreground -x movie -x music -x upscale -x script -x scriptja -x scriptpt -x sound -x .vscode -urN n7e/middleman.lua n7e_old/middleman.lua
+--- n7e/middleman.lua	2023-10-12 15:47:29.957463900 -0300
++++ n7e_old/middleman.lua	2023-06-25 08:47:12.000000000 -0300
+@@ -23,7 +23,6 @@
  end
  
  function middleman_mouse_moved(x, y)
-+	touch_set_mouse_pos(x, y)
+-	touch_set_mouse_pos(x, y)
  	if guimode() == "pc" then
  		n7_mouse_moved(x, y)
  	elseif guimode() == "psp" then
-@@ -686,4 +687,5 @@
+@@ -687,5 +686,4 @@
  			particle(864, p, particle_komore, 0, 0)
  		end
  	end
-+	draw_touch_controls()
+-	draw_touch_controls()
  end
-\ No newline at end of file
-diff -x foreground -x movie -x music -x upscale -x script -x scriptja -x scriptpt -x sound -urN /mnt/d/n7e/n7.lua lovegame/n7.lua
---- /mnt/d/n7e/n7.lua	2022-02-26 19:32:04.000000000 -0300
-+++ lovegame/n7.lua	2022-08-21 17:53:52.498612800 -0300
-@@ -223,38 +223,6 @@
- 	end
- end
- 
--local day_intro_shader = love.graphics.newShader([[#define SIZE 0.15
--uniform float effect_param;
--bool side(vec2 a, vec2 b, vec2 c) {
--	return ((b.x - a.x)*(c.y - a.y) - (b.y - a.y)*(c.x - a.x)) > 0.0;
--}
--float line_dist(vec2 pt1, vec2 pt2, vec2 testPt) {
--  vec2 lineDir = pt2 - pt1;
--  vec2 perpDir = vec2(lineDir.y, -lineDir.x);
--  vec2 dirToPt1 = pt1 - testPt;
--  return abs(dot(normalize(perpDir), dirToPt1));
--}
--vec4 effect(vec4 color, Image tex, vec2 uv, vec2 screen_coords) {
--	vec2 iuv = vec2(uv.x, 1.0 - uv.y * 600 / 800);
--	vec2 t1 = vec2(effect_param, 1.0);
--	vec2 t2 = vec2(1.0, effect_param);
--	vec2 b1 = vec2(effect_param - SIZE, 1.0);
--	vec2 b2 = vec2(1.0, effect_param - SIZE);
--	if(side(t1, t2, iuv)) {
--		return vec4(0.0, 0.0, 0.0, 1.0);
--	} else if(side(b1, b2, iuv)) {
--		if(iuv.x < effect_param || iuv.y < effect_param) {
--			float t = 1.0 - clamp(line_dist(t1, t2, iuv) / min(SIZE, 1.0 - effect_param) + 0.25, 0.0, 1.0);
--			t = 1.0 - t * t;
--			return Texel(tex, uv) * vec4(t, t, t, 1);
--		} else {
--			float t = line_dist(b1, b2, iuv) / SIZE / 2.0 + 0.5;
--			return vec4(t, t, t, 1);
--		}
--	} else {
--		return Texel(tex, uv);
--	}
--}]], nil)
- 
- function n7_draw_day_intro()
- 	love.graphics.setColor(1, 1, 1, 1)
-@@ -271,8 +239,9 @@
- 	elseif i > 1 then
- 		i = 1
- 	end
--	day_intro_shader:send("effect_param", i * 3 - 2)
--	love.graphics.setShader(day_intro_shader)
-+	-- purposefully broken shader, game is unable to run with this
-+	-- day_intro_shader:send("effect_param", i * 3 - 2)
-+	-- love.graphics.setShader(day_intro_shader)
- 	love.graphics.push()
- 	bg_fit_apply()
- 	love.graphics.draw(calendar_bg, 0, 0, 0, 0.5)
-diff -x foreground -x movie -x music -x upscale -x script -x scriptja -x scriptpt -x sound -urN /mnt/d/n7e/own/settings.scr lovegame/own/settings.scr
---- /mnt/d/n7e/own/settings.scr	2022-02-27 00:53:20.000000000 -0300
-+++ lovegame/own/settings.scr	2022-09-10 17:49:38.464284700 -0300
-@@ -17,6 +17,12 @@
- label game
- setvar selected = sel
- setvar skipstr = "Only Read"
-+if autosave == 0
-+	setvar autosavestr = "Off"
-+fi
-+if autosave == 1
-+	setvar autosavestr = "On"
-+fi
- if skip == 1
- 	setvar skipstr = "All"
- fi
-@@ -47,7 +53,7 @@
+diff -x foreground -x movie -x music -x upscale -x script -x scriptja -x scriptpt -x sound -x .vscode -urN n7e/n7_dc.lua n7e_old/n7_dc.lua
+--- n7e/n7_dc.lua	2023-10-12 18:48:19.376200400 -0300
++++ n7e_old/n7_dc.lua	2023-06-25 17:11:52.000000000 -0300
+@@ -279,18 +279,7 @@
+ 				love.graphics.draw(assets.dc_choice_bg, love.graphics.newQuad(0, 32, 256, 32, 256, 64), left + 9, cy - 2, 0, (right - left - 22 + 3) / 256, 1)
+ 				love.graphics.setColor(1, 1, 1, 1)
+ 				if can_reset then
+-					reset_button = "R"
+-					if check_mobile() then
+-						reset_button = "Hold"
+-					end
+-					if ACTIVE_JOYSTICK ~= nil then
+-						if check_nx() then
+-							reset_button = "Y"
+-						else
+-							reset_button = "X"
+-						end
+-					end
+-					n7_dc_print(("[%s] Reset selected option"):format(reset_button), left, y + h + 34, 1, nil)
++					n7_dc_print("[R] Reset selected option", left, y + h + 34, 1, nil)
+ 				end
+ 			else
+ 				love.graphics.draw(assets.dc_choice_cursor, love.graphics.newQuad(0, math.floor(love.timer.getTime() * 8) % 4 * 32, 32, 32, 32, 256), 400 - hw - 40, cy - 2)
+Binary files n7e/own/dc/window11ps2.png and n7e_old/own/dc/window11ps2.png differ
+Binary files n7e/own/dc/window14.png and n7e_old/own/dc/window14.png differ
+Binary files n7e/own/dc/window14ps2.png and n7e_old/own/dc/window14ps2.png differ
+Binary files n7e/own/dc/window15.png and n7e_old/own/dc/window15.png differ
+Binary files n7e/own/dc/window15ps2.png and n7e_old/own/dc/window15ps2.png differ
+diff -x foreground -x movie -x music -x upscale -x script -x scriptja -x scriptpt -x sound -x .vscode -urN n7e/own/settings.scr n7e_old/own/settings.scr
+--- n7e/own/settings.scr	2023-10-12 19:49:24.439034200 -0300
++++ n7e_old/own/settings.scr	2023-06-25 10:19:54.000000000 -0300
+@@ -51,13 +51,7 @@
  if text_speed == 5
  	setvar spdstr = "Instant"
  fi
--menu <Back|%Fast-Forward Mode - $skipstr|%Instant Skip Mode - $iskipstr|%Text Speed - $spdstr|%Language - $langstr|%VLR Mode - $vlrmode_toggle|%Debug Mode - $debugmode_toggle
-+menu <Back|%Fast-Forward Mode - $skipstr|%Instant Skip Mode - $iskipstr|%Text Speed - $spdstr|%Language - $langstr|%VLR Mode - $vlrmode_toggle|Auto Save - $autosavestr|%Debug Mode - $debugmode_toggle
+-if swap_ab_buttons == 0
+-	setvar swapbtn = "Off"
+-fi
+-if swap_ab_buttons == 1
+-	setvar swapbtn = "On"
+-fi
+-menu <Back|%Fast-Forward Mode - $skipstr|%Instant Skip Mode - $iskipstr|%Text Speed - $spdstr|%Text Fade - $fadestr|%Language - $langstr|%VLR Mode - $vlrmode_toggle|%Swap A/B Buttons - $swapbtn|%Debug Mode - $debugmode_toggle
++menu <Back|%Fast-Forward Mode - $skipstr|%Instant Skip Mode - $iskipstr|%Text Speed - $spdstr|%Text Fade - $fadestr|%Language - $langstr|%VLR Mode - $vlrmode_toggle|%Debug Mode - $debugmode_toggle
  if selected == 1
  	setvar sel = 0
  	goto root
-@@ -89,9 +95,15 @@
+@@ -105,15 +99,9 @@
      gsetvar vlrmode = 0
  fi
- if selected == 7
--	gsetvar debugmode toggle
-+	gsetvar autosave toggle
+ if selected == 8
+-	gsetvar swap_ab_buttons toggle
+-fi
+-if selected == 108
+-	gsetvar swap_ab_buttons = 0
+-fi
+-if selected == 9
+ 	gsetvar debugmode toggle
  fi
- if selected == 107
-+	gsetvar autosave = 1
-+fi
-+if selected == 8
-+	gsetvar debugmode toggle
-+fi
+-if selected == 109
 +if selected == 108
      gsetvar debugmode = 0
  fi
  setvar sel = selected
-@@ -185,18 +197,6 @@
- 
- label visual
- setvar selected = sel
+diff -x foreground -x movie -x music -x upscale -x script -x scriptja -x scriptpt -x sound -x .vscode -urN n7e/own/settings.scr.orig n7e_old/own/settings.scr.orig
+--- n7e/own/settings.scr.orig	2023-06-25 10:19:54.000000000 -0300
++++ n7e_old/own/settings.scr.orig	1969-12-31 21:00:00.000000000 -0300
+@@ -1,271 +0,0 @@
+-label root
+-setvar in_settings = 1
+-menu <Back|Game Options|Visual Options|Sound Options
+-if selected == 1
+-	return
+-fi
+-if selected == 2
+-	goto game
+-fi
+-if selected == 3
+-	goto visual
+-fi
+-if selected == 4
+-	goto sound
+-fi
+-
+-label game
+-setvar selected = sel
+-setvar skipstr = "Only Read"
+-if skip == 1
+-	setvar skipstr = "All"
+-fi
+-setvar iskipstr = "Only Read"
+-if iskip == 1
+-	setvar iskipstr = "All"
+-fi
+-setvar fadestr = "On"
+-if no_text_fade == 1
+-	setvar fadestr = "Off"
+-fi
+-setvar langstr = "English"
+-if language == 1
+-	setvar langstr = "Japanese"
+-fi
+-if language == 2
+-	setvar langstr = "Portuguese (demo)"
+-fi
+-setvar spdstr = "1x"
+-if text_speed == 0
+-	setvar spdstr = "0.5x"
+-fi
+-if text_speed == 2
+-	setvar spdstr = "2x"
+-fi
+-if text_speed == 3
+-	setvar spdstr = "3x"
+-fi
+-if text_speed == 4
+-	setvar spdstr = "4x"
+-fi
+-if text_speed == 5
+-	setvar spdstr = "Instant"
+-fi
+-menu <Back|%Fast-Forward Mode - $skipstr|%Instant Skip Mode - $iskipstr|%Text Speed - $spdstr|%Text Fade - $fadestr|%Language - $langstr|%VLR Mode - $vlrmode_toggle|%Debug Mode - $debugmode_toggle
+-if selected == 1
+-	setvar sel = 0
+-	goto root
+-fi
+-if selected == 2
+-	gsetvar skip toggle
+-fi
+-if selected == 102
+-    gsetvar skip = 0
+-fi
+-if selected == 3
+-	gsetvar iskip toggle
+-fi
+-if selected == 103
+-    gsetvar iskip = 0
+-fi
+-if selected == 4
+-    gsetvar text_speed + setting
+-	gsetvar text_speed cycle 0 5
+-fi
+-if selected == 104
+-    gsetvar text_speed = 1
+-fi
+-if selected == 5
+-	gsetvar no_text_fade toggle
+-fi
+-if selected == 105
+-    gsetvar no_text_fade = 0
+-fi
+-if selected == 6
+-    gsetvar language + setting
+-	gsetvar language cycle 0 2
+-	autosave
+-	create_save save
+-	load_save save
+-	setvar save = 0
+-fi
+-if selected == 106
+-    gsetvar language = 0
+-fi
+-if selected == 7
+-	gsetvar vlrmode toggle
+-fi
+-if selected == 107
+-    gsetvar vlrmode = 0
+-fi
+-if selected == 8
+-	gsetvar debugmode toggle
+-fi
+-if selected == 108
+-    gsetvar debugmode = 0
+-fi
+-setvar sel = selected
+-goto game
+-
+-label version
+-setvar selected = sel
+-setvar videosstr = "PSP"
+-if videos == 1
+-	setvar videosstr = "PC"
+-fi
+-menu <Back|%Opening - $videosstr
+-if setting == 0
+-	setvar setting = 1
+-fi
+-if selected == 1
+-	setvar sel = 0
+-	goto root
+-fi
+-if selected == 2
+-	gsetvar videos toggle
+-fi
+-if selected == 102
+-	gsetvar videos = 0
+-fi
+-setvar sel = selected
+-goto version
+-
+-label sound
+-setvar selected = sel
+-setvar oststr = "PS2/PSP"
+-if ost == 1
+-	setvar oststr = "Original"
+-fi
+-menu <Back|%Master Volume - $vol%|%BGM Volume - $bgmvol%|%SE Volume - $sevol%|%Voice Volume - $voicevol%|%GUI Volume - $guivol%|%Soundtrack - $oststr
+-if setting == 0
+-	setvar setting = 1
+-fi
+-if selected == 1
+-	setvar sel = 0
+-    goto root
+-fi
+-if selected == 2
+-	setvar setting * 10
+-    gsetvar vol + setting
+-	gsetvar vol cycle 0 100
+-fi
+-if selected == 102
+-    gsetvar vol = 100
+-fi
+-if selected == 3
+-	setvar setting * 10
+-    gsetvar bgmvol + setting
+-	gsetvar bgmvol cycle 0 100
+-fi
+-if selected == 103
+-    gsetvar bgmvol = 100
+-fi
+-if selected == 4
+-	setvar setting * 10
+-    gsetvar sevol + setting
+-	gsetvar sevol cycle 0 100
+-fi
+-if selected == 104
+-    gsetvar sevol = 100
+-fi
+-if selected == 5
+-	setvar setting * 10
+-    gsetvar voicevol + setting
+-	gsetvar voicevol cycle 0 100
+-fi
+-if selected == 105
+-    gsetvar voicevol = 100
+-fi
+-if selected == 6
+-	setvar setting * 10
+-    gsetvar guivol + setting
+-	gsetvar guivol cycle 0 100
+-fi
+-if selected == 106
+-    gsetvar guivol = 100
+-fi
+-if selected == 7
+-	gsetvar ost toggle
+-fi
+-if selected == 107
+-	gsetvar ost = 0
+-fi
+-setvar sel = selected
+-goto sound
+-
+-label visual
+-setvar selected = sel
 -if winmode == 0
 -	setvar modestr = "Resizable"
 -fi
@@ -392,22 +676,33 @@ diff -x foreground -x movie -x music -x upscale -x script -x scriptja -x scriptp
 -if winmode == 3
 -	setvar modestr = "1600x1200"
 -fi
- if bgfit == 0
- 	setvar widestr = "Keep"
- fi
-@@ -215,7 +215,7 @@
- fi
- setvar sdcstyle = dcstyle
- setvar sdcstyle + 1
+-if bgfit == 0
+-	setvar widestr = "Keep"
+-fi
+-if bgfit == 1
+-	setvar widestr = "Zoom (↓/↑/W/S to pan)"
+-fi
+-if bgfit == 2
+-	setvar widestr = "Stretch"
+-fi
+-setvar guistr = "Dreamcast"
+-if guimode == 1
+-	setvar guistr = "PC"
+-fi
+-if guimode == 2
+-	setvar guistr = "PSP"
+-fi
+-setvar sdcstyle = dcstyle
+-setvar sdcstyle + 1
 -menu <Back|%Window Mode - $modestr|%Unlock Aspect Ratio - $unlockaspect_toggle|%Background Fit - $widestr|%Interface - $guistr|%Dreamcast Style - $sdcstyle
-+menu <Back|%Unlock Aspect Ratio - $unlockaspect_toggle|%Background Fit - $widestr|%Interface - $guistr|%Dreamcast Style - $sdcstyle
- if setting == 0
- 	setvar setting = 1
- fi
-@@ -224,33 +224,26 @@
-     goto root
- fi
- if selected == 2
+-if setting == 0
+-	setvar setting = 1
+-fi
+-if selected == 1
+-	setvar sel = 0
+-    goto root
+-fi
+-if selected == 2
 -    gsetvar winmode + setting
 -	gsetvar winmode cycle 0 3
 -fi
@@ -415,237 +710,240 @@ diff -x foreground -x movie -x music -x upscale -x script -x scriptja -x scriptp
 -	gsetvar winmode = 0
 -fi
 -if selected == 3
- 	gsetvar unlockaspect toggle
- fi
- if selected == 103
- 	gsetvar unlockaspect = 0
- fi
+-	gsetvar unlockaspect toggle
+-fi
+-if selected == 103
+-	gsetvar unlockaspect = 0
+-fi
 -if selected == 4
-+if selected == 3
-     gsetvar bgfit + setting
- 	gsetvar bgfit cycle 0 2
- fi
- if selected == 104
- 	gsetvar bgfit = 0
- fi
+-    gsetvar bgfit + setting
+-	gsetvar bgfit cycle 0 2
+-fi
+-if selected == 104
+-	gsetvar bgfit = 0
+-fi
 -if selected == 5
-+if selected == 4
- 	gsetvar guimode + setting
- 	gsetvar guimode cycle 0 2
- fi
- if selected == 105
- 	gsetvar guimode = 0
- fi
+-	gsetvar guimode + setting
+-	gsetvar guimode cycle 0 2
+-fi
+-if selected == 105
+-	gsetvar guimode = 0
+-fi
 -if selected == 6
-+if selected == 5
-     gsetvar dcstyle + setting
- 	gsetvar dcstyle cycle 0 12
- fi
-@@ -258,4 +251,4 @@
- 	gsetvar dcstyle = 0
- fi
- setvar sel = selected
+-    gsetvar dcstyle + setting
+-	gsetvar dcstyle cycle 0 14
+-fi
+-if selected == 106
+-	gsetvar dcstyle = 0
+-fi
+-setvar sel = selected
 -goto visual
-+goto visual
-\ No newline at end of file
-diff -x foreground -x movie -x music -x upscale -x script -x scriptja -x scriptpt -x sound -urN /mnt/d/n7e/saving.lua lovegame/saving.lua
---- /mnt/d/n7e/saving.lua	2022-02-26 21:09:30.000000000 -0300
-+++ lovegame/saving.lua	2022-09-10 18:25:26.559224400 -0300
-@@ -92,12 +92,14 @@
- function load_system()
- 	if love.filesystem.getInfo("system.dat") then
- 		gvars = love.filesystem.load("system.dat")()
-+		print(serialize(gvars))
- 		gvars.guimode = ({dc = "0", pc = "1", psp = "2"})[gvars.guimode]
- 		gvars.ost = ({psp = "0", pc = "1"})[gvars.ost]
- 		gvars.videos = ({psp = "0", pc = "1"})[gvars.videos]
- 		gvars.winmode = ({res = "0", fs = "1", ["800x600"] = "2", ["1600x1200"] = "3"})[gvars.winmode] or "0"
- 		gvars.language = ({en = "0", ja = "1", pt = "2"})[gvars.language] or "0"
- 		gvars.text_speed = ({["50"] = "0", ["100"] = "1", ["200"] = "2", ["300"] = "3", ["400"] = "4", ["instant"] = "5"})[gvars.text_speed] or "1"
-+		gvars.autosave = gvars.autosave or "1"
- 		love.audio.setVolume(tonumber(gvars.vol) / 100)
- 		updatewinmode()
- 		vars_meta.__index = gvars
-@@ -117,6 +119,7 @@
- 	gvars2.winmode = ({"res", "fs", "800x600", "1600x1200"})[tonumber(gvars.winmode) + 1]
- 	gvars2.language = ({"en", "ja", "pt"})[tonumber(gvars.language) + 1]
- 	gvars2.text_speed = ({"50", "100", "200", "300", "400", "instant"})[tonumber(gvars.text_speed) + 1]
-+	gvars2.autosave = ({"0", "1"})[tonumber(gvars.autosave)]
- 	write_save(-1, gvars2)
- end
- 
-diff -x foreground -x movie -x music -x upscale -x script -x scriptja -x scriptpt -x sound -urN /mnt/d/n7e/scripting.lua lovegame/scripting.lua
---- /mnt/d/n7e/scripting.lua	2022-02-27 02:15:24.000000000 -0300
-+++ lovegame/scripting.lua	2022-09-10 17:42:35.902334600 -0300
-@@ -1,7 +1,7 @@
+diff -x foreground -x movie -x music -x upscale -x script -x scriptja -x scriptpt -x sound -x .vscode -urN n7e/own/settings.scr.rej n7e_old/own/settings.scr.rej
+--- n7e/own/settings.scr.rej	2023-06-25 18:14:46.773899300 -0300
++++ n7e_old/own/settings.scr.rej	1969-12-31 21:00:00.000000000 -0300
+@@ -1,28 +0,0 @@
+---- mnt/d/n7e/own/settings.scr	2022-02-27 00:53:20.000000000 -0300
+-+++ own/settings.scr	2022-09-10 17:49:38.464284700 -0300
+-@@ -53,7 +59,7 @@
+- if text_speed == 5
+- 	setvar spdstr = "Instant"
+- fi
+--menu <Back|%Fast-Forward Mode - $skipstr|%Instant Skip Mode - $iskipstr|%Text Speed - $spdstr|%Language - $langstr|%VLR Mode - $vlrmode_toggle|%Debug Mode - $debugmode_toggle
+-+menu <Back|%Fast-Forward Mode - $skipstr|%Instant Skip Mode - $iskipstr|%Text Speed - $spdstr|%Language - $langstr|%VLR Mode - $vlrmode_toggle|Auto Save - $autosavestr|%Debug Mode - $debugmode_toggle
+- if selected == 1
+- 	setvar sel = 0
+- 	goto root
+-@@ -95,9 +101,15 @@
+-     gsetvar vlrmode = 0
+- fi
+- if selected == 7
+--	gsetvar debugmode toggle
+-+	gsetvar autosave toggle
+- fi
+- if selected == 107
+-+	gsetvar autosave = 1
+-+fi
+-+if selected == 8
+-+	gsetvar debugmode toggle
+-+fi
+-+if selected == 108
+-     gsetvar debugmode = 0
+- fi
+- setvar sel = selected
+diff -x foreground -x movie -x music -x upscale -x script -x scriptja -x scriptpt -x sound -x .vscode -urN n7e/scripting.lua n7e_old/scripting.lua
+--- n7e/scripting.lua	2023-10-12 19:01:45.791011000 -0300
++++ n7e_old/scripting.lua	2023-06-25 12:38:02.000000000 -0300
+@@ -1,14 +1,7 @@
  local cmds = {}
  cmdi = 1
  vars = {selected = "0"}
--gvars = {vol = "100", bgmvol = "50", sevol = "100", voicevol = "100", guivol = "100", skip = "0", debugmode = "0", language = "0", text_speed = "1"}
-+gvars = {autosave = "1", vol = "100", bgmvol = "50", sevol = "100", voicevol = "100", guivol = "100", skip = "0", debugmode = "0", language = "0", text_speed = "1"}
+-gvars = {vol = "100", bgmvol = "50", sevol = "100", voicevol = "100", guivol = "100", skip = "0", debugmode = "0", language = "0", text_speed = "1", no_text_fade = "0", swap_ab_buttons = "0"}
+-
+--- set gvars.swap_ab_buttons to 1 on NX
+-if check_nx() then
+-	print("swapping buttons on NX")
+-	gvars.swap_ab_buttons = "1"
+-end
+-
++gvars = {vol = "100", bgmvol = "50", sevol = "100", voicevol = "100", guivol = "100", skip = "0", debugmode = "0", language = "0", text_speed = "1", no_text_fade = "0"}
  gdirty = false
  stack = {}
  
-@@ -14,6 +14,7 @@
- setmetatable(gvars, gvars_meta)
- setmetatable(vars, vars_meta)
- 
-+
- local function parse_message(text)
- 	local cmds = {}
- 	local cmd = ""
-@@ -746,17 +747,7 @@
- 				gvars[cmd[2]] = (gvars[cmd[2]] ~= "0") and "0" or "1"
- 			end
- 			love.audio.setVolume(tonumber(gvars.vol) / 100)
--			if cmd[2] == "winmode" then
--				if gvars.winmode == "0" then
--					love.window.setMode(0, 0, {resizable = true, fullscreen = false})
--				elseif gvars.winmode == "1" then
--					love.window.setMode(0, 0, {resizable = false, fullscreen = true})
--				elseif gvars.winmode == "2" then
--					love.window.setMode(800, 600, {resizable = false, fullscreen = false})
--				elseif gvars.winmode == "3" then
--					love.window.setMode(1600, 1200, {resizable = false, fullscreen = false})
--				end
--			elseif cmd[2] == "ost" and bgm then
-+			if cmd[2] == "ost" and bgm then
- 				if gvars.ost == "0" or bgm_filename:find("2[67]") then
- 					gvars.bgmvol = tostring(math.floor(tonumber(gvars.bgmvol) * 50 / 100))
- 				else
-diff -x foreground -x movie -x music -x upscale -x script -x scriptja -x scriptpt -x sound -urN /mnt/d/n7e/touch_controls.lua lovegame/touch_controls.lua
---- /mnt/d/n7e/touch_controls.lua	1969-12-31 21:00:00.000000000 -0300
-+++ lovegame/touch_controls.lua	2022-09-17 16:28:53.696303500 -0300
-@@ -0,0 +1,131 @@
-+local click_interval = 0.5
-+
-+function should_show_controls()
-+	return cur_text and vars.thinking ~= "1" 
-+	and state ~= BACKLOG 
-+	and state ~= HELP 
-+	and state ~= MAP
-+	and state ~= CHOICE
-+	and vars.filename ~= "main.scr"
-+	and vars.filename ~= "save.scr"
-+	and vars.filename ~= "load.scr"
-+	and not hiding_text_box
-+	and not is_menu
-+end
-+
-+local x_pos = 800 - 90
-+local y_pos = 0
-+
-+local mouse_y = 0
-+local mouse_x = 0
-+
-+function touch_set_mouse_pos(x, y)
-+	print(string.format("set pos: %s, %s", x, y))
-+	mouse_x = x
-+	mouse_y = y
-+end
-+
-+local shadow_offset = 3
-+
-+local skip_label_offset = 0
-+local skip_label_width = 60
-+
-+local backlog_label_offset = 110
-+local backlog_label_width = 100
-+
-+local pause_label_offset = 200
-+local pause_label_width = 85
-+
-+function is_skippable()
-+	return vars.autoscroll == "0" and skippable or gvars.skip ~= "0"
-+end
-+
-+-- i should refactor this function someday
-+function draw_touch_controls()
-+	if should_show_controls() then
-+		if guimode() == "dc" then
-+			y_pos = 370 - n7_dc_textbox_bounds() + 20
-+			x_pos = 800 - 90
-+		elseif guimode() == "pc" then
-+			y_pos = 420 - n7_textbox_bounds()
-+			x_pos = 800 - 90
-+		elseif guimode() == "psp" then
-+			y_pos = 435 - n7_psp_textbox_bounds()
-+			x_pos = 800 - 70
-+		end
-+		love.graphics.push()
-+		-- sombras azuis e pretas
-+		if is_skippable() then
-+			if is_mouse_positioned(skip_label_offset, skip_label_width) then
-+				love.graphics.setColor(0, 0, 255)
-+				love.graphics.printf("Skip", x_pos + shadow_offset, y_pos + shadow_offset, skip_label_width, "center")
-+			else
-+				love.graphics.setColor(0, 0, 0)
-+				love.graphics.printf("Skip", x_pos + shadow_offset, y_pos + shadow_offset, skip_label_width, "center")
-+			end
-+		else
-+			love.graphics.setColor(0, 0, 0)
-+			love.graphics.printf("Skip", x_pos, y_pos, skip_label_width, "center")
-+		end
-+
-+		if is_mouse_positioned(backlog_label_offset, backlog_label_width) then
-+			love.graphics.setColor(0, 0, 255)
-+			love.graphics.printf("Backlog", x_pos - backlog_label_offset + shadow_offset, y_pos + shadow_offset, backlog_label_width, "center")
-+		else
-+			love.graphics.setColor(0, 0, 0)
-+			love.graphics.printf("Backlog", x_pos - backlog_label_offset + shadow_offset, y_pos + shadow_offset, backlog_label_width, "center")
-+		end
-+
-+		if is_mouse_positioned(pause_label_offset, pause_label_width) then
-+			love.graphics.setColor(0, 0, 255)
-+			love.graphics.printf("Pause", x_pos - pause_label_offset + shadow_offset, y_pos + shadow_offset, pause_label_width, "center")
-+		else
-+			love.graphics.setColor(0, 0, 0)
-+			love.graphics.printf("Pause", x_pos - pause_label_offset + shadow_offset, y_pos + shadow_offset, pause_label_width, "center")
-+		end
-+		
-+		love.graphics.setColor(255, 255, 255)
-+		if is_skippable() then
-+			love.graphics.printf("Skip", x_pos, y_pos, skip_label_width, "center")
-+		end
-+		love.graphics.printf("Backlog", x_pos - backlog_label_offset, y_pos, backlog_label_width, "center")
-+		love.graphics.printf("Pause", x_pos - pause_label_offset, y_pos, pause_label_width, "center")
-+		love.graphics.pop()
-+	end
-+end
-+
-+function is_mouse_positioned(offset, width)
-+	return mouse_x >= x_pos - offset and (x_pos - offset) + width > mouse_x
-+		and mouse_y >= y_pos and y_pos + 50 > mouse_y
-+end
-+
-+function is_touch_skipping()
-+	if last_skip_press and x_pos and y_pos and should_show_controls() then
-+		if is_mouse_positioned(skip_label_offset, skip_label_width) then
-+			return touches_amount == 1 or love.mouse.isDown(1)
-+		end
-+	end
-+end
-+
-+function touch_handle_click_event()
-+	if should_show_controls() then
-+		local time = love.timer.getTime()
-+		-- Instant skip/fast forward
-+		if is_mouse_positioned(skip_label_offset, skip_label_width) then
-+			if last_skip_press and time <= last_skip_press + click_interval then
-+				love.keypressed("k")
-+			end
-+			last_skip_press = time
-+			return true
-+		end
-+		if is_mouse_positioned(backlog_label_offset, backlog_label_width) then
-+			love.keypressed("b")
-+			return true
-+		end
-+		if is_mouse_positioned(pause_label_offset, pause_label_width) then
-+			love.keypressed("escape")
-+			return true
-+		end
-+	end
-+	return false
-+end
+diff -x foreground -x movie -x music -x upscale -x script -x scriptja -x scriptpt -x sound -x .vscode -urN n7e/touch_controls.lua n7e_old/touch_controls.lua
+--- n7e/touch_controls.lua	2023-10-12 19:49:13.052309100 -0300
++++ n7e_old/touch_controls.lua	1969-12-31 21:00:00.000000000 -0300
+@@ -1,153 +0,0 @@
+-local click_interval = 0.5
+-
+-function should_show_controls()
+-	return cur_text and vars.thinking ~= "1" 
+-	and state ~= BACKLOG 
+-	and state ~= HELP 
+-	and state ~= MAP
+-	and state ~= CHOICE
+-	and vars.filename ~= "main.scr"
+-	and vars.filename ~= "save.scr"
+-	and vars.filename ~= "load.scr"
+-	and not hiding_text_box
+-	and not is_menu
+-end
+-
+-local x_pos = 800 - 90
+-local y_pos = 0
+-
+-local mouse_y = 0
+-local mouse_x = 0
+-
+-function touch_set_mouse_pos(x, y)
+-	mouse_x = x
+-	mouse_y = y
+-end
+-
+-local shadow_offset = 3
+-
+-local skip_label_offset = 0
+-local skip_label_width = 60
+-
+-local backlog_label_offset = 175
+-local backlog_label_width = 100
+-
+-local pause_label_offset = 260
+-local pause_label_width = 85
+-
+-local auto_label_offset = 80
+-local auto_label_width = 85
+-
+-function is_skippable()
+-	return vars.autoscroll == "0" and skippable or gvars.skip ~= "0"
+-end
+-
+--- i should refactor this function someday
+-function draw_touch_controls()
+-	if not check_mobile() then
+-		return
+-	end
+-	if should_show_controls() then
+-		if guimode() == "dc" then
+-			if gvars.language == "1" then
+-				y_pos = (370 - n7_dc_textbox_bounds() + 20) + 30
+-			else
+-				y_pos = 370 - n7_dc_textbox_bounds() + 20
+-			end
+-			x_pos = 800 - 90
+-		elseif guimode() == "pc" then
+-			y_pos = 420 - n7_textbox_bounds()
+-			x_pos = 800 - 90
+-		elseif guimode() == "psp" then
+-			y_pos = 435 - n7_psp_textbox_bounds()
+-			x_pos = 800 - 70
+-		end
+-		love.graphics.push()
+-		-- sombras azuis e pretas
+-		if is_skippable() then
+-			if is_mouse_positioned(skip_label_offset, skip_label_width) then
+-				love.graphics.setColor(0, 0, 255)
+-				love.graphics.printf("Skip", x_pos + shadow_offset, y_pos + shadow_offset, skip_label_width, "center")
+-			else
+-				love.graphics.setColor(0, 0, 0)
+-				love.graphics.printf("Skip", x_pos + shadow_offset, y_pos + shadow_offset, skip_label_width, "center")
+-			end
+-		else
+-			love.graphics.setColor(0, 0, 0)
+-			love.graphics.printf("Skip", x_pos, y_pos, skip_label_width, "center")
+-		end
+-
+-		if is_mouse_positioned(backlog_label_offset, backlog_label_width) then
+-			love.graphics.setColor(0, 0, 255)
+-			love.graphics.printf("Backlog", x_pos - backlog_label_offset + shadow_offset, y_pos + shadow_offset, backlog_label_width, "center")
+-		else
+-			love.graphics.setColor(0, 0, 0)
+-			love.graphics.printf("Backlog", x_pos - backlog_label_offset + shadow_offset, y_pos + shadow_offset, backlog_label_width, "center")
+-		end
+-
+-		if is_mouse_positioned(pause_label_offset, pause_label_width) then
+-			love.graphics.setColor(0, 0, 255)
+-			love.graphics.printf("Pause", x_pos - pause_label_offset + shadow_offset, y_pos + shadow_offset, pause_label_width, "center")
+-		else
+-			love.graphics.setColor(0, 0, 0)
+-			love.graphics.printf("Pause", x_pos - pause_label_offset + shadow_offset, y_pos + shadow_offset, pause_label_width, "center")
+-		end
+-
+-		if AUTO_PLAY then
+-			love.graphics.setColor(0, 0, 255)
+-			love.graphics.printf("Auto", x_pos - auto_label_offset + shadow_offset, y_pos + shadow_offset, auto_label_width, "center")
+-		else
+-			love.graphics.setColor(0, 0, 0)
+-			love.graphics.printf("Auto", x_pos - auto_label_offset + shadow_offset, y_pos + shadow_offset, auto_label_width, "center")
+-		end
+-		
+-		love.graphics.setColor(255, 255, 255)
+-		if is_skippable() then
+-			love.graphics.printf("Skip", x_pos, y_pos, skip_label_width, "center")
+-		end
+-		love.graphics.printf("Backlog", x_pos - backlog_label_offset, y_pos, backlog_label_width, "center")
+-		love.graphics.printf("Pause", x_pos - pause_label_offset, y_pos, pause_label_width, "center")
+-		love.graphics.printf("Auto", x_pos - auto_label_offset, y_pos, auto_label_width, "center")
+-		love.graphics.pop()
+-	end
+-end
+-
+-function is_mouse_positioned(offset, width)
+-	return mouse_x >= x_pos - offset and (x_pos - offset) + width > mouse_x
+-		and mouse_y >= y_pos and y_pos + 50 > mouse_y
+-end
+-
+-function is_touch_skipping()
+-	if last_skip_press and x_pos and y_pos and should_show_controls() then
+-		if is_mouse_positioned(skip_label_offset, skip_label_width) then
+-			return touches_amount == 1 or love.mouse.isDown(1)
+-		end
+-	end
+-end
+-
+-function touch_handle_click_event()
+-	if should_show_controls() then
+-		local time = love.timer.getTime()
+-		-- Instant skip/fast forward
+-		if is_mouse_positioned(skip_label_offset, skip_label_width) then
+-			if last_skip_press and time <= last_skip_press + click_interval then
+-				love.keypressed("k")
+-			end
+-			last_skip_press = time
+-			return true
+-		end
+-		if is_mouse_positioned(backlog_label_offset, backlog_label_width) then
+-			love.keypressed("b")
+-			return true
+-		end
+-		if is_mouse_positioned(pause_label_offset, pause_label_width) then
+-			love.keypressed("escape")
+-			return true
+-		end
+-		if is_mouse_positioned(auto_label_offset, auto_label_width) then
+-			love.keypressed("f2")
+-			return true
+-		end
+-	end
+-	return false
+-end
 \ No newline at end of file
