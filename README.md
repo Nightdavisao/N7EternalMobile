@@ -1,22 +1,24 @@
-# Never7 Eternal Edition for Android
-A patch to make the game playable on Android (only for Android devices)
+# Never7 Eternal Edition (v0.5) for Android/Nintendo Switch
+A patch to make the game playable on Android/Nintendo Switch
 * [What's working](#whats-working)
 * [Notes](#notes)
 * [Saving](#saving)
 * [FAQ](#faq)
 * [Gameplay](#gameplay)
 * [How to install it](#how-to-install)
-## Notes
-* The game is automatically saved when it loses its focus (when it's running in background or when you open the system's notification panel) and there's no option to disable the auto saving for now.
-* The sound won't pause if you leave the game open in background.
-* Connecting a headset/headphone while the game is open won't route the sound to the connected device but instead it will stop playing any sound. Connect whatever you want to connect first and then open the game. This seems to be a problem with the engine itself.
+## Notes (Switch)
+* The Switch support is considered to be "experimental" since I can't tell how well it's working because I don't have a Nintendo Switch myself (I had someone else to test it). You probably want to play this on handheld mode because the controller support is partial.
+* You should use [love-nx](https://github.com/retronx-team/love-nx). Simply replace the files in the .love file with files from the patch.
+## Notes (Android)
+* Audio keeps playing if you leave the game open in background.
+* Plugging in a headset or headphones while the game is running doesn't switch the audio to the connected device. Instead, it stops all sound. Plug in whatever you want to plug first and then open the game. This seems to be a problem with the engine itself.
 ## Saving
 By default, everything (save states, system save) is saved to `/data/data/org.love2d.android/files/save/Never7Eternal`, however, if you're an unprivileged user of your own device (if your device isn't rooted), you can't access this directory.  
 To change the save directory to an accessible one through common means, replace the `conf.lua` file with this [file](https://files.catbox.moe/eos49l.lua). Now this directory will be `/storage/emulated/0/Android/data/org.love2d.android/save/Never7Eternal`.
 ## FAQ
 *No one really asked me anything below so call it a QA*  
 **Q: Does it work on iOS?**  
-A: I don't know. [You can tell me](https://www.reddit.com/message/compose/?to=nightdavisao) and I will gladly edit this answer.  
+A: I don't know. [You can tell me](https://www.reddit.com/message/compose/?to=komachitsugumi) and I will gladly edit this answer.  
 **Q: Does it work with the LÖVE's Play Store version?**  
 A: No. Don't even try it. You will miserably fail to make it work, this version is just too outdated.  
 **Q: Does transferring the files by the usual way (through the Windows Explorer) works?**  
