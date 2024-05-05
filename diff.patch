@@ -1,19 +1,19 @@
-diff -x foreground -x movie -x music -x upscale -x script -x scriptja -x scriptpt -x sound -x .vscode -urN n7e_old/backlog.lua n7e/backlog.lua
---- n7e_old/backlog.lua	2023-06-25 18:02:26.000000000 -0300
-+++ n7e/backlog.lua	2023-06-25 18:03:36.000000000 -0300
-@@ -148,4 +148,4 @@
+diff -urN -x foreground -x movie -x music -x upscale -x script -x scriptja -x scriptpt -x sound -x .vscode n7e_old/backlog.lua n7e/backlog.lua
+--- n7e_old/backlog.lua	2024-04-02 01:25:46.000000000 -0300
++++ n7e/backlog.lua	2024-05-05 19:41:58.604849200 -0300
+@@ -152,4 +152,4 @@
  	end
  	clicked = false
  	--love.graphics.pop()
 -end
 \ No newline at end of file
 +end
-diff -x foreground -x movie -x music -x upscale -x script -x scriptja -x scriptpt -x sound -x .vscode -urN n7e_old/conf.lua n7e/conf.lua
---- n7e_old/conf.lua	2023-06-25 09:23:12.000000000 -0300
-+++ n7e/conf.lua	2023-06-27 11:00:30.000000000 -0300
+diff -urN -x foreground -x movie -x music -x upscale -x script -x scriptja -x scriptpt -x sound -x .vscode n7e_old/conf.lua n7e/conf.lua
+--- n7e_old/conf.lua	2024-04-04 02:33:08.000000000 -0300
++++ n7e/conf.lua	2024-05-05 19:41:58.635848800 -0300
 @@ -2,12 +2,15 @@
  	t.identity = "Never7Eternal"
- 	t.window.title = "Never7 -the end of infinity- Eternal Edition v0.5"
+ 	t.window.title = "Never7 -the end of infinity- Eternal Edition v0.6"
  	t.window.icon = "icon-high.png"
 -	t.window.width = 800
 -	t.window.height = 600
@@ -31,9 +31,9 @@ diff -x foreground -x movie -x music -x upscale -x script -x scriptja -x scriptp
 -	t.modules.joystick = false
  	t.modules.physics = false
  end
-diff -x foreground -x movie -x music -x upscale -x script -x scriptja -x scriptpt -x sound -x .vscode -urN n7e_old/main.lua n7e/main.lua
---- n7e_old/main.lua	2023-06-25 17:01:00.000000000 -0300
-+++ n7e/main.lua	2023-10-12 20:37:03.926561100 -0300
+diff -urN -x foreground -x movie -x music -x upscale -x script -x scriptja -x scriptpt -x sound -x .vscode n7e_old/main.lua n7e/main.lua
+--- n7e_old/main.lua	2024-04-04 01:33:42.000000000 -0300
++++ n7e/main.lua	2024-05-05 20:07:38.887485200 -0300
 @@ -1,3 +1,33 @@
 +global_os = love.system.getOS()
 +print(("global_os: %s"):format(global_os))
@@ -65,10 +65,10 @@ diff -x foreground -x movie -x music -x upscale -x script -x scriptja -x scriptp
 +	return count
 +end
 +
- love.filesystem.load("utf8.lua")()
- love.filesystem.load("conv.lua")()
- love.filesystem.load("scripting.lua")()
-@@ -17,6 +47,8 @@
+ function loadable_img(path, upscale)
+ 	return {"loadable_img", path, upscale or false}
+ end
+@@ -78,6 +108,8 @@
  love.filesystem.load("tips.lua")()
  love.filesystem.load("text_input.lua")()
  love.filesystem.load("append_editor.lua")()
@@ -77,7 +77,7 @@ diff -x foreground -x movie -x music -x upscale -x script -x scriptja -x scriptp
  
  assets = {}
  
-@@ -49,7 +81,11 @@
+@@ -125,7 +157,11 @@
  	return loaded_snds[path]
  end
  
@@ -89,7 +89,7 @@ diff -x foreground -x movie -x music -x upscale -x script -x scriptja -x scriptp
  	if gvars.winmode == "0" then
  		love.window.setMode(800, 600, {resizable = true, fullscreen = false})
  	elseif gvars.winmode == "1" then
-@@ -62,6 +98,8 @@
+@@ -138,6 +174,8 @@
  end
  
  function love.load()
@@ -98,7 +98,7 @@ diff -x foreground -x movie -x music -x upscale -x script -x scriptja -x scriptp
  	love.keyboard.setKeyRepeat(true)
  	love.graphics.setDefaultFilter("linear", "linear")
  	font = love.graphics.newFont(font_filename, 26)
-@@ -181,7 +219,7 @@
+@@ -262,7 +300,7 @@
  local last_second = love.timer.getTime()
  local play_time = 0
  local time = 0
@@ -106,8 +106,8 @@ diff -x foreground -x movie -x music -x upscale -x script -x scriptja -x scriptp
 +AUTO_PLAY = false
  local started_waiting
  
- local function is_not_stuck_in_effect()
-@@ -192,7 +230,9 @@
+ function is_not_stuck_in_effect()
+@@ -280,7 +318,9 @@
  
  local sound
  local last_cg = 0
@@ -117,7 +117,7 @@ diff -x foreground -x movie -x music -x upscale -x script -x scriptja -x scriptp
  	local time = love.timer.getTime()
  	if time >= last_cg + 0.5 then
  		collectgarbage("step")
-@@ -215,8 +255,8 @@
+@@ -303,8 +343,8 @@
  		delay = delay + 60
  		state = SCROLLING
  	end
@@ -128,7 +128,7 @@ diff -x foreground -x movie -x music -x upscale -x script -x scriptja -x scriptp
  		and vars.autoscroll == "0" and is_not_stuck_in_effect() then
  		advance()
  	end
-@@ -243,6 +283,37 @@
+@@ -331,6 +371,37 @@
  	while delay < 1 and state == SCROLLING and not waiting_sound and is_not_stuck_in_effect() do
  		step_script()
  	end
@@ -166,7 +166,7 @@ diff -x foreground -x movie -x music -x upscale -x script -x scriptja -x scriptp
  end
  
  function has(table, item)
-@@ -258,9 +329,136 @@
+@@ -346,9 +417,136 @@
  	return not polling_for or has(polling_for, p)
  end
  
@@ -305,7 +305,7 @@ diff -x foreground -x movie -x music -x upscale -x script -x scriptja -x scriptp
  	local w = sh * 800 / 600
  	if w > sw then
  		local h = sw * 600 / 800
-@@ -287,9 +485,15 @@
+@@ -375,9 +573,15 @@
  end
  
  local last_input = -10
@@ -322,7 +322,7 @@ diff -x foreground -x movie -x music -x upscale -x script -x scriptja -x scriptp
  		hiding_text_box = false
  		if state == POLLING and is_polling_for("click") then
  			vars.setting = "1"
-@@ -352,11 +556,11 @@
+@@ -440,11 +644,11 @@
  		end
  	elseif key == "f2" then
  		if not isrepeat and is_not_stuck_in_effect() and state == WAITING then
@@ -337,15 +337,15 @@ diff -x foreground -x movie -x music -x upscale -x script -x scriptja -x scriptp
  				play_gui_sfx(assets.ps2_auto_on_sfx)
  			end
  		end
-@@ -714,6 +918,7 @@
- 	if is_waiting_for_load() then
+@@ -814,6 +1018,7 @@
+ 		love.graphics.present()
  		return
  	end
 +	safe_x = love.window.getSafeArea()
  	wide_mode = gvars.unlockaspect ~= "0" or wide_forcing
  	wide_forcing = false
  	vars.fps = love.timer.getFPS()
-@@ -725,7 +930,7 @@
+@@ -825,7 +1030,7 @@
  		love.graphics.clear()
  	end
  	love.graphics.push()
@@ -354,7 +354,7 @@ diff -x foreground -x movie -x music -x upscale -x script -x scriptja -x scriptp
  	local w = sh * 800 / 600
  	if w > sw then
  		local h = sw * 600 / 800
-@@ -747,8 +952,17 @@
+@@ -847,8 +1052,17 @@
  		screenscale = sh / 600
  		love.graphics.scale(screenscale)
  		if wide_mode then
@@ -374,7 +374,7 @@ diff -x foreground -x movie -x music -x upscale -x script -x scriptja -x scriptp
  			screen_top = 0
  			screen_bottom = 600
  		else
-@@ -933,7 +1147,7 @@
+@@ -1034,7 +1248,7 @@
  			love.graphics.draw(fg.cur, x - fg.cur:getWidth() / 4, 600 - fg.cur:getHeight() / 2, 0, 0.5)
  		end
  	end
@@ -383,9 +383,9 @@ diff -x foreground -x movie -x music -x upscale -x script -x scriptja -x scriptp
  		love.graphics.setColor(1, 1, 1, 0.5)
  		love.graphics.draw(assets.dc_skip, love.graphics.newQuad(0, math.floor(love.timer.getTime() * 6) % 4 * 32, 32, 32, 32, 256), 16, 16, 0, 1.25, 1.25)
  	end
-diff -x foreground -x movie -x music -x upscale -x script -x scriptja -x scriptpt -x sound -x .vscode -urN n7e_old/middleman.lua n7e/middleman.lua
---- n7e_old/middleman.lua	2023-06-25 08:47:12.000000000 -0300
-+++ n7e/middleman.lua	2023-10-12 15:47:29.957463900 -0300
+diff -urN -x foreground -x movie -x music -x upscale -x script -x scriptja -x scriptpt -x sound -x .vscode n7e_old/middleman.lua n7e/middleman.lua
+--- n7e_old/middleman.lua	2024-04-03 06:10:58.000000000 -0300
++++ n7e/middleman.lua	2024-05-05 19:41:58.661848500 -0300
 @@ -23,6 +23,7 @@
  end
  
@@ -394,16 +394,16 @@ diff -x foreground -x movie -x music -x upscale -x script -x scriptja -x scriptp
  	if guimode() == "pc" then
  		n7_mouse_moved(x, y)
  	elseif guimode() == "psp" then
-@@ -686,4 +687,5 @@
+@@ -691,4 +692,5 @@
  			particle(864, p, particle_komore, 0, 0)
  		end
  	end
 +	draw_touch_controls()
  end
-diff -x foreground -x movie -x music -x upscale -x script -x scriptja -x scriptpt -x sound -x .vscode -urN n7e_old/n7_dc.lua n7e/n7_dc.lua
---- n7e_old/n7_dc.lua	2023-06-25 17:11:52.000000000 -0300
-+++ n7e/n7_dc.lua	2023-10-12 18:48:19.376200400 -0300
-@@ -279,7 +279,18 @@
+diff -urN -x foreground -x movie -x music -x upscale -x script -x scriptja -x scriptpt -x sound -x .vscode n7e_old/n7_dc.lua n7e/n7_dc.lua
+--- n7e_old/n7_dc.lua	2024-04-03 03:57:12.000000000 -0300
++++ n7e/n7_dc.lua	2024-05-05 19:41:58.670848400 -0300
+@@ -292,7 +292,18 @@
  				love.graphics.draw(assets.dc_choice_bg, love.graphics.newQuad(0, 32, 256, 32, 256, 64), left + 9, cy - 2, 0, (right - left - 22 + 3) / 256, 1)
  				love.graphics.setColor(1, 1, 1, 1)
  				if can_reset then
@@ -423,14 +423,9 @@ diff -x foreground -x movie -x music -x upscale -x script -x scriptja -x scriptp
  				end
  			else
  				love.graphics.draw(assets.dc_choice_cursor, love.graphics.newQuad(0, math.floor(love.timer.getTime() * 8) % 4 * 32, 32, 32, 32, 256), 400 - hw - 40, cy - 2)
-Binary files n7e_old/own/dc/window11ps2.png and n7e/own/dc/window11ps2.png differ
-Binary files n7e_old/own/dc/window14.png and n7e/own/dc/window14.png differ
-Binary files n7e_old/own/dc/window14ps2.png and n7e/own/dc/window14ps2.png differ
-Binary files n7e_old/own/dc/window15.png and n7e/own/dc/window15.png differ
-Binary files n7e_old/own/dc/window15ps2.png and n7e/own/dc/window15ps2.png differ
-diff -x foreground -x movie -x music -x upscale -x script -x scriptja -x scriptpt -x sound -x .vscode -urN n7e_old/own/settings.scr n7e/own/settings.scr
+diff -urN -x foreground -x movie -x music -x upscale -x script -x scriptja -x scriptpt -x sound -x .vscode n7e_old/own/settings.scr n7e/own/settings.scr
 --- n7e_old/own/settings.scr	2023-06-25 10:19:54.000000000 -0300
-+++ n7e/own/settings.scr	2023-10-12 19:49:24.439034200 -0300
++++ n7e/own/settings.scr	2024-05-05 19:41:58.671848300 -0300
 @@ -51,7 +51,13 @@
  if text_speed == 5
  	setvar spdstr = "Instant"
@@ -463,316 +458,9 @@ diff -x foreground -x movie -x music -x upscale -x script -x scriptja -x scriptp
      gsetvar debugmode = 0
  fi
  setvar sel = selected
-diff -x foreground -x movie -x music -x upscale -x script -x scriptja -x scriptpt -x sound -x .vscode -urN n7e_old/own/settings.scr.orig n7e/own/settings.scr.orig
---- n7e_old/own/settings.scr.orig	1969-12-31 21:00:00.000000000 -0300
-+++ n7e/own/settings.scr.orig	2023-06-25 10:19:54.000000000 -0300
-@@ -0,0 +1,271 @@
-+label root
-+setvar in_settings = 1
-+menu <Back|Game Options|Visual Options|Sound Options
-+if selected == 1
-+	return
-+fi
-+if selected == 2
-+	goto game
-+fi
-+if selected == 3
-+	goto visual
-+fi
-+if selected == 4
-+	goto sound
-+fi
-+
-+label game
-+setvar selected = sel
-+setvar skipstr = "Only Read"
-+if skip == 1
-+	setvar skipstr = "All"
-+fi
-+setvar iskipstr = "Only Read"
-+if iskip == 1
-+	setvar iskipstr = "All"
-+fi
-+setvar fadestr = "On"
-+if no_text_fade == 1
-+	setvar fadestr = "Off"
-+fi
-+setvar langstr = "English"
-+if language == 1
-+	setvar langstr = "Japanese"
-+fi
-+if language == 2
-+	setvar langstr = "Portuguese (demo)"
-+fi
-+setvar spdstr = "1x"
-+if text_speed == 0
-+	setvar spdstr = "0.5x"
-+fi
-+if text_speed == 2
-+	setvar spdstr = "2x"
-+fi
-+if text_speed == 3
-+	setvar spdstr = "3x"
-+fi
-+if text_speed == 4
-+	setvar spdstr = "4x"
-+fi
-+if text_speed == 5
-+	setvar spdstr = "Instant"
-+fi
-+menu <Back|%Fast-Forward Mode - $skipstr|%Instant Skip Mode - $iskipstr|%Text Speed - $spdstr|%Text Fade - $fadestr|%Language - $langstr|%VLR Mode - $vlrmode_toggle|%Debug Mode - $debugmode_toggle
-+if selected == 1
-+	setvar sel = 0
-+	goto root
-+fi
-+if selected == 2
-+	gsetvar skip toggle
-+fi
-+if selected == 102
-+    gsetvar skip = 0
-+fi
-+if selected == 3
-+	gsetvar iskip toggle
-+fi
-+if selected == 103
-+    gsetvar iskip = 0
-+fi
-+if selected == 4
-+    gsetvar text_speed + setting
-+	gsetvar text_speed cycle 0 5
-+fi
-+if selected == 104
-+    gsetvar text_speed = 1
-+fi
-+if selected == 5
-+	gsetvar no_text_fade toggle
-+fi
-+if selected == 105
-+    gsetvar no_text_fade = 0
-+fi
-+if selected == 6
-+    gsetvar language + setting
-+	gsetvar language cycle 0 2
-+	autosave
-+	create_save save
-+	load_save save
-+	setvar save = 0
-+fi
-+if selected == 106
-+    gsetvar language = 0
-+fi
-+if selected == 7
-+	gsetvar vlrmode toggle
-+fi
-+if selected == 107
-+    gsetvar vlrmode = 0
-+fi
-+if selected == 8
-+	gsetvar debugmode toggle
-+fi
-+if selected == 108
-+    gsetvar debugmode = 0
-+fi
-+setvar sel = selected
-+goto game
-+
-+label version
-+setvar selected = sel
-+setvar videosstr = "PSP"
-+if videos == 1
-+	setvar videosstr = "PC"
-+fi
-+menu <Back|%Opening - $videosstr
-+if setting == 0
-+	setvar setting = 1
-+fi
-+if selected == 1
-+	setvar sel = 0
-+	goto root
-+fi
-+if selected == 2
-+	gsetvar videos toggle
-+fi
-+if selected == 102
-+	gsetvar videos = 0
-+fi
-+setvar sel = selected
-+goto version
-+
-+label sound
-+setvar selected = sel
-+setvar oststr = "PS2/PSP"
-+if ost == 1
-+	setvar oststr = "Original"
-+fi
-+menu <Back|%Master Volume - $vol%|%BGM Volume - $bgmvol%|%SE Volume - $sevol%|%Voice Volume - $voicevol%|%GUI Volume - $guivol%|%Soundtrack - $oststr
-+if setting == 0
-+	setvar setting = 1
-+fi
-+if selected == 1
-+	setvar sel = 0
-+    goto root
-+fi
-+if selected == 2
-+	setvar setting * 10
-+    gsetvar vol + setting
-+	gsetvar vol cycle 0 100
-+fi
-+if selected == 102
-+    gsetvar vol = 100
-+fi
-+if selected == 3
-+	setvar setting * 10
-+    gsetvar bgmvol + setting
-+	gsetvar bgmvol cycle 0 100
-+fi
-+if selected == 103
-+    gsetvar bgmvol = 100
-+fi
-+if selected == 4
-+	setvar setting * 10
-+    gsetvar sevol + setting
-+	gsetvar sevol cycle 0 100
-+fi
-+if selected == 104
-+    gsetvar sevol = 100
-+fi
-+if selected == 5
-+	setvar setting * 10
-+    gsetvar voicevol + setting
-+	gsetvar voicevol cycle 0 100
-+fi
-+if selected == 105
-+    gsetvar voicevol = 100
-+fi
-+if selected == 6
-+	setvar setting * 10
-+    gsetvar guivol + setting
-+	gsetvar guivol cycle 0 100
-+fi
-+if selected == 106
-+    gsetvar guivol = 100
-+fi
-+if selected == 7
-+	gsetvar ost toggle
-+fi
-+if selected == 107
-+	gsetvar ost = 0
-+fi
-+setvar sel = selected
-+goto sound
-+
-+label visual
-+setvar selected = sel
-+if winmode == 0
-+	setvar modestr = "Resizable"
-+fi
-+if winmode == 1
-+	setvar modestr = "Fullscreen"
-+fi
-+if winmode == 2
-+	setvar modestr = "800x600"
-+fi
-+if winmode == 3
-+	setvar modestr = "1600x1200"
-+fi
-+if bgfit == 0
-+	setvar widestr = "Keep"
-+fi
-+if bgfit == 1
-+	setvar widestr = "Zoom (↓/↑/W/S to pan)"
-+fi
-+if bgfit == 2
-+	setvar widestr = "Stretch"
-+fi
-+setvar guistr = "Dreamcast"
-+if guimode == 1
-+	setvar guistr = "PC"
-+fi
-+if guimode == 2
-+	setvar guistr = "PSP"
-+fi
-+setvar sdcstyle = dcstyle
-+setvar sdcstyle + 1
-+menu <Back|%Window Mode - $modestr|%Unlock Aspect Ratio - $unlockaspect_toggle|%Background Fit - $widestr|%Interface - $guistr|%Dreamcast Style - $sdcstyle
-+if setting == 0
-+	setvar setting = 1
-+fi
-+if selected == 1
-+	setvar sel = 0
-+    goto root
-+fi
-+if selected == 2
-+    gsetvar winmode + setting
-+	gsetvar winmode cycle 0 3
-+fi
-+if selected == 102
-+	gsetvar winmode = 0
-+fi
-+if selected == 3
-+	gsetvar unlockaspect toggle
-+fi
-+if selected == 103
-+	gsetvar unlockaspect = 0
-+fi
-+if selected == 4
-+    gsetvar bgfit + setting
-+	gsetvar bgfit cycle 0 2
-+fi
-+if selected == 104
-+	gsetvar bgfit = 0
-+fi
-+if selected == 5
-+	gsetvar guimode + setting
-+	gsetvar guimode cycle 0 2
-+fi
-+if selected == 105
-+	gsetvar guimode = 0
-+fi
-+if selected == 6
-+    gsetvar dcstyle + setting
-+	gsetvar dcstyle cycle 0 14
-+fi
-+if selected == 106
-+	gsetvar dcstyle = 0
-+fi
-+setvar sel = selected
-+goto visual
-diff -x foreground -x movie -x music -x upscale -x script -x scriptja -x scriptpt -x sound -x .vscode -urN n7e_old/own/settings.scr.rej n7e/own/settings.scr.rej
---- n7e_old/own/settings.scr.rej	1969-12-31 21:00:00.000000000 -0300
-+++ n7e/own/settings.scr.rej	2023-06-25 18:14:46.773899300 -0300
-@@ -0,0 +1,28 @@
-+--- mnt/d/n7e/own/settings.scr	2022-02-27 00:53:20.000000000 -0300
-++++ own/settings.scr	2022-09-10 17:49:38.464284700 -0300
-+@@ -53,7 +59,7 @@
-+ if text_speed == 5
-+ 	setvar spdstr = "Instant"
-+ fi
-+-menu <Back|%Fast-Forward Mode - $skipstr|%Instant Skip Mode - $iskipstr|%Text Speed - $spdstr|%Language - $langstr|%VLR Mode - $vlrmode_toggle|%Debug Mode - $debugmode_toggle
-++menu <Back|%Fast-Forward Mode - $skipstr|%Instant Skip Mode - $iskipstr|%Text Speed - $spdstr|%Language - $langstr|%VLR Mode - $vlrmode_toggle|Auto Save - $autosavestr|%Debug Mode - $debugmode_toggle
-+ if selected == 1
-+ 	setvar sel = 0
-+ 	goto root
-+@@ -95,9 +101,15 @@
-+     gsetvar vlrmode = 0
-+ fi
-+ if selected == 7
-+-	gsetvar debugmode toggle
-++	gsetvar autosave toggle
-+ fi
-+ if selected == 107
-++	gsetvar autosave = 1
-++fi
-++if selected == 8
-++	gsetvar debugmode toggle
-++fi
-++if selected == 108
-+     gsetvar debugmode = 0
-+ fi
-+ setvar sel = selected
-diff -x foreground -x movie -x music -x upscale -x script -x scriptja -x scriptpt -x sound -x .vscode -urN n7e_old/scripting.lua n7e/scripting.lua
---- n7e_old/scripting.lua	2023-06-25 12:38:02.000000000 -0300
-+++ n7e/scripting.lua	2023-10-12 19:01:45.791011000 -0300
+diff -urN -x foreground -x movie -x music -x upscale -x script -x scriptja -x scriptpt -x sound -x .vscode n7e_old/scripting.lua n7e/scripting.lua
+--- n7e_old/scripting.lua	2024-04-04 15:58:54.000000000 -0300
++++ n7e/scripting.lua	2024-05-05 19:41:58.729847600 -0300
 @@ -1,7 +1,14 @@
  local cmds = {}
  cmdi = 1
@@ -789,9 +477,9 @@ diff -x foreground -x movie -x music -x upscale -x script -x scriptja -x scriptp
  gdirty = false
  stack = {}
  
-diff -x foreground -x movie -x music -x upscale -x script -x scriptja -x scriptpt -x sound -x .vscode -urN n7e_old/touch_controls.lua n7e/touch_controls.lua
+diff -urN -x foreground -x movie -x music -x upscale -x script -x scriptja -x scriptpt -x sound -x .vscode n7e_old/touch_controls.lua n7e/touch_controls.lua
 --- n7e_old/touch_controls.lua	1969-12-31 21:00:00.000000000 -0300
-+++ n7e/touch_controls.lua	2023-10-12 19:49:13.052309100 -0300
++++ n7e/touch_controls.lua	2024-05-05 19:41:58.730847600 -0300
 @@ -0,0 +1,153 @@
 +local click_interval = 0.5
 +

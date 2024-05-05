@@ -1,4 +1,4 @@
-# Never7 Eternal Edition (v0.5) for Android/Nintendo Switch
+# Never7 Eternal Edition (v0.6) for Android/Nintendo Switch
 A patch to make the game playable on Android/Nintendo Switch
 * [What's working](#whats-working)
 * [Notes](#notes)
@@ -36,9 +36,10 @@ You can fast forward, instant skip and open the backlog with the GUI controls. S
 2. [Download a proper file manager](https://github.com/zhanghai/MaterialFiles/releases/latest), we will need it to transfer the game files to the right directory.  
 3. Download the [LÖVE engine's APK](https://github.com/love2d/love/releases/download/11.4/love-11.4-android.apk)
 4. Install everything you downloaded (I'm talking about the APKs, not the VN)
-5. Extract the game's .love file to `(Internal storage)/Android/data/org.love2d.android/files/games/lovegame` using the file manager you downloaded. (You can extract it through the `Open with...` option when you long press the file and click the three dots on the top right corner. Rename the file to `n7e.zip` if you can't find the option.)
-6. Download the pre-patched game files [here](https://github.com/Nightdavisao/N7EternalMobile/releases/latest) and extract it to the same folder you extracted the game's .love file. Overwrite everything when asked.
-7. Now you're ready to play by launching the game's engine app.
+5. Open the engine app at least one time.
+6. Extract the game's .love file to `(Internal storage)/Android/data/org.love2d.android/files/games/lovegame` using the file manager you downloaded. (You can extract it through the `Open with...` option when you long press the file and click the three dots on the top right corner. Rename the file to `n7e.zip` if you can't find the option.)
+7. Download the pre-patched game files [here](https://github.com/Nightdavisao/N7EternalMobile/releases/latest) and extract it to the same folder you extracted the game's .love file. Overwrite everything when asked.
+8. Now you're ready to play by launching the game's engine app.
 </details>
 <details>
 <summary markdown="span">Android 11 and up way</summary>
@@ -50,8 +51,9 @@ You can fast forward, instant skip and open the backlog with the GUI controls. S
 4. Extract the game's .love file to somewhere in your device with a file manager or an archive manager. (You can extract it through the `Open with...` option when you long press the file and click the three dots on the top right corner. Rename the file to `n7e.zip` if you can't find the option.)
 5. Download the pre-patched game files [here](https://github.com/Nightdavisao/N7EternalMobile/releases/latest)
 6. Extract the patch to the same folder you extracted the game's .love file. Overwrite everything when asked.
-7. Transfer the files using your native file manager to `/sdcard/Android/data/org.love2d.android/files/games/lovegame` (Your native file manager is the one that comes with your device, probably it is called "Files" or "My Files")
-8. Now you're ready to play by launching the game's engine app.
+7. Open the engine app at least one time.
+8. Transfer the files using your native file manager to `/sdcard/Android/data/org.love2d.android/files/games/lovegame` (Your native file manager is the one that comes with your device, probably it is called "Files" or "My Files")
+9. Now you're ready to play by launching the game's engine app.
 </details>
 <details>
 <summary markdown="span">ADB way (if you have a working computer)</summary>
@@ -69,7 +71,8 @@ You can fast forward, instant skip and open the backlog with the GUI controls. S
 12. Open a command prompt (cmd) on your computer by pressing Windows+R, typing `cmd`, and pressing Enter.
 13. In the command prompt, navigate to the location of the extracted platform-tools folder by using the `cd` command.
 14. Type `adb.exe devices` in the command prompt and press Enter to verify that your device is listed.
-15. If your device is listed, type the following command: `adb.exe push (location path to the 'games' folder) /sdcard/Android/data/org.love2d.android/files/`. Replace `(location path to the 'games' folder)` with the actual path to the `games` folder on your computer.
-16. Press Enter and wait for the transfer to complete.
-17. Launch the LÖVE engine app on your Android device to open and play the game.
+15. Open the engine app at least one time.
+16. If your device is listed, type the following command: `adb.exe push (location path to the 'games' folder) /sdcard/Android/data/org.love2d.android/files/`. Replace `(location path to the 'games' folder)` with the actual path to the `games` folder on your computer.
+17. Press Enter and wait for the transfer to complete.
+18. Launch the LÖVE engine app on your Android device to open and play the game.
 </details>
