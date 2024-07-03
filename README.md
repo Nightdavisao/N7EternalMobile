@@ -28,8 +28,10 @@ You can fast forward, instant skip and open the backlog with the GUI controls. S
 * Tapping with two fingers goes back or opens the in-game menu
 * Double tap the "Skip" text for instant skip, hold it for fast forwarding
 ## How to install
+<details markdown="1">
 
-### Android 11 and below
+<summary markdown="span">Common way (not avaliable for Android 11 and up)</summary>
+
 **BE SURE TO HAVE AT LEAST 8 GIGS OF FREE SPACE IN YOUR DEVICE. (THAT'S PROBABLY THE DOUBLE OF THE GAME'S SIZE)**
 
 1. Download the VN if you haven't already, it's free (KID is defunct and MAGES doesn't care bruh) and you can get it [here](https://www.mediafire.com/file/nshjldhr3zzm760/n7e.love/file).
@@ -39,9 +41,12 @@ You can fast forward, instant skip and open the backlog with the GUI controls. S
 5. Open the engine app at least one time.
 6. Extract the game's .love file to `(Internal storage)/Android/data/org.love2d.android/files/games/lovegame` using the file manager you downloaded. (You can extract it through the `Open with...` option when you long press the file and click the three dots on the top right corner. Rename the file to `n7e.zip` if you can't find the option.)
 7. Download the pre-patched game files [here](https://github.com/Nightdavisao/N7EternalMobile/releases/latest) and extract it to the same folder you extracted the game's .love file. Overwrite everything when asked.
-8. Now you're ready to play by launching the engine app.
+8. Now you're ready to play by launching the game's engine app.
+</details>
+<details markdown="1">
 
-### Android 11 and up
+<summary markdown="span">Android 11 and up way</summary>
+
 **BE SURE TO HAVE AT LEAST 8 GIGS OF FREE SPACE IN YOUR DEVICE. (THAT'S PROBABLY THE DOUBLE OF THE GAME'S SIZE)**
 
 1. Download the VN if you haven't already, it's free (KID is defunct and MAGES doesn't care bruh) and you can get it [here](https://www.mediafire.com/file/nshjldhr3zzm760/n7e.love/file).
@@ -54,7 +59,11 @@ You can fast forward, instant skip and open the backlog with the GUI controls. S
 8. Transfer the files using your native file manager to `/sdcard/Android/data/org.love2d.android/files/games/lovegame` (Your native file manager is the one that comes with your device, probably it is called "Files" or "My Files")
 9. Now you're ready to play by launching the game's engine app.
 
-### ADB (if you have a computer)
+</details>
+<details markdown="1">
+
+<summary markdown="span">ADB way (if you have a working computer)</summary>
+
 1. Ensure your device has at least 5 GB of free space.
 2. Download the game from [here](https://www.mediafire.com/file/nshjldhr3zzm760/n7e.love/file).
 3. Download the [SDK platform-tools](https://developer.android.com/studio/releases/platform-tools) for transferring the game.
@@ -73,3 +82,5 @@ You can fast forward, instant skip and open the backlog with the GUI controls. S
 16. If your device is listed, type the following command: `adb.exe push (location path to the 'games' folder) /sdcard/Android/data/org.love2d.android/files/`. Replace `(location path to the 'games' folder)` with the actual path to the `games` folder on your computer.
 17. Press Enter and wait for the transfer to complete.
 18. Launch the LÖVE engine app on your Android device to open and play the game.
+
+</details>
