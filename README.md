@@ -38,5 +38,6 @@ Below are the instructions for the Xbox layout, but it works for every controlle
 
 You can use the right stick to scroll the backlog and the left stick to scroll the menus. 
 ## How to play
-Download the already pre-patched game here: [link soon]  
+Download the already pre-patched game [here.](https://mega.nz/file/UpMQiJzA) 
+The decryption key is in the [releases page](https://github.com/Nightdavisao/N7EternalMobile/releases).  
 If you're on Android, download the LÖVE APK on their [official website](https://love2d.org/) and then load the game through LÖVE Loader, which will appear in your app drawer once you install the APK.
