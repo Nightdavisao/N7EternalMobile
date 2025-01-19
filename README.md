@@ -24,8 +24,8 @@ You can fast forward, instant skip and open the backlog with the GUI controls. S
 * Tapping with two fingers goes back or opens the in-game menu
 * Double tap the "Skip" text for instant skip, hold it for fast forwarding
 ### Controller
-This mod has a limited support for controller *(you can even use this mod just for this functionality if you're on PC)*.  
-Below are the instructions for Switch layout, but it works for every controller that SDL supports *(you just have to follow the button layout)*.  
+This mod has a limited support for controllers *(you can even use this mod just for this functionality if you're on PC)*.  
+Below are the instructions for the Xbox layout, but it works for every controller that SDL supports *(you just have to follow the face button layout)*.  
 
 **Xbox controller users:** A/B buttons are swapped by default if you're on a Nintendo Switch. They shouldn't be swapped if you're on anything else, but you can swap them in the in-game menu if you want to.
 
