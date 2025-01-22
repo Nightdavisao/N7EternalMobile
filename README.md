@@ -29,11 +29,11 @@ Below are the instructions for the Xbox layout, but it works for every controlle
 
 **Xbox controller users:** A/B buttons are swapped by default if you're on a Nintendo Switch. They shouldn't be swapped if you're on anything else, but you can swap them in the in-game menu if you want to.
 
-* B - hides the hidebox (if it's visible) or goes back
+* B - hides the textbox (if it's visible) or goes back
 * A - advances the text, confirms choices
 * X - opens the in-game menu
 * Y - opens the backlog
-* L - fast forwards
+* L - fast forward
 * R - enables auto mode
 
 You can use the right stick to scroll the backlog and the left stick to scroll the menus. 
