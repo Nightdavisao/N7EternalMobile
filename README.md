@@ -43,7 +43,7 @@ Download the LÖVE APK on their [official website](https://love2d.org/) and then
 Download the pre-built IPA [here](https://mega.nz/file/vZ1BzJKS#CDYfPNZgZs08E5uNxc4DMLIiG-m8EpjY-jeerXTyo0Q) (v0.6.1) and sideload that using Sideloadly (or any other solution).  
 #### Manually loading the game with LÖVE's compiled IPA
 1. Sideload the [LÖVE IPA](/assets/love2d.ipa) with Sideloadly (or any other solution)  
-2. Add the `.love` file to the documents for the LÖVE app through iTunes (See [this section](https://support.apple.com/en-gb/120403) on Apple's website).
+2. Add the `.love` file to the documents for the LÖVE app through [iTunes](https://support.apple.com/en-gb/120403) or [Finder (newer macOS versions)](https://support.apple.com/en-gb/119585).
 3. Open the LÖVE app and load the game.
 
 Thanks to [pichuis](https://github.com/lewismcyoutube) for helping to test this on iOS!
