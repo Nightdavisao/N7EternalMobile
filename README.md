@@ -49,5 +49,5 @@ Download the pre-built IPA [here](https://mega.nz/file/vZ1BzJKS#CDYfPNZgZs08E5uN
 Thanks to [pichuis](https://github.com/lewismcyoutube) for helping to test this on iOS!
 ### Switch
 Switch support has been tested with love-nx. From [love-nx](https://github.com/retronx-team/love-nx)'s README:
-> Put a LÖVE archive named game.love in the same folder as the NRO file of the latest release. Additionally, you can directly drop the contents of the archive in the folder, as long as it contains a main.lua file.
+> Put a LÖVE archive named game.love in the same folder as the NRO file of the latest release. Additionally, you can directly drop the contents of the archive in the folder, as long as it contains a main.lua file.  
 Download love-nx's NRO [here](https://github.com/retronx-team/love-nx/releases).
